@@ -96,5 +96,3 @@ def get_all_data(sample_size):
     data.to_csv(cachepath, index=False)
     print(f"total data size: {data.memory_usage(deep=True).sum() / 1e9:.2f} gb")
     return data
-
-data = get_all_data(sample_size=10_000)
