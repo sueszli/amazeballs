@@ -124,7 +124,9 @@ Which dataset(s) did you choose? Why?
 How did you clean/transform the data? Why?
 
 - sample because too large
-- lots of languages, so models had to be multilingual ['en' 'ro' 'vi' 'cy' 'af' 'unknown' 'de' 'sv' 'tl' 'no' 'da' 'es' 'sl' 'so' 'ca' 'fr' 'fi' 'it' 'nl']
+        - 100_000 samples were 2.92 GB
+        - 10_000 samples were 0.33 gb → managable but still too large when inference per sample takes ~1 second for each model
+- lots of languages, so models had to be multilingual
 
 How did you solve the problem of missing values? Why?
 

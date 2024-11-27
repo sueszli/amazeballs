@@ -1,39 +1,15 @@
-import csv
-import glob
-import os
-from pathlib import Path
-from types import SimpleNamespace
-from typing import Optional
-
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
 import pandas as pd
 import json
-import copy
-import hashlib
 import json
 import os
-from itertools import product
-
 import numpy as np
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-import torchvision
-from PIL import Image
 from tqdm import tqdm
 from utils import *
-import datasets 
-import huggingface_hub
-from huggingface_hub import hf_hub_download
-from transformers import BertTokenizer, BertModel, BertForMaskedLM, BertForSequenceClassification, BertConfig
-from transformers import Trainer, TrainingArguments
-from transformers import pipeline
 
-datasets.logging.set_verbosity_error()
 set_env()
 
 data_path = get_current_dir().parent / "data"
@@ -54,6 +30,7 @@ os.makedirs(output_path, exist_ok=True)
 
 def get_asin2category():
     # use `parent_asin` key from metadata to look up the category of each reviewed item
+    from huggingface_hub import hf_hub_download
     file_path = hf_hub_download(repo_id="McAuley-Lab/Amazon-Reviews-2023", filename="asin2category.json", repo_type="dataset", cache_dir=dataset_path)
     file = open(file_path, "r")
     data = json.load(file)
@@ -61,10 +38,12 @@ def get_asin2category():
     return data
 
 def get_category_metadata(category):
+    import datasets
     data = datasets.load_dataset("McAuley-Lab/Amazon-Reviews-2023", f"raw_meta_{category}", split="full", cache_dir=dataset_path, trust_remote_code=True)
     return data
 
 def get_all_categories():
+    import datasets
     data = datasets.load_dataset("text", data_files="https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023/raw/main/all_categories.txt", streaming=False, cache_dir=dataset_path, trust_remote_code=True)
     return data["train"].to_dict()["text"]
 
@@ -107,13 +86,8 @@ def get_all_data(sample_size):
 
 # 
 # preprocessing
-# 
+#
 
-
-# - 1) sentiment analysis
-# - 2) subjectivity analysis
-# - 3) most important "aspects" mentioned of each product
-# - 4) predicting star from rating:
 
 def get_language(review):
     from langdetect import detect
@@ -122,31 +96,37 @@ def get_language(review):
     except:
         return None
 
-
 def get_sentiment(review):
     from transformers import pipeline
-    sentiment_classifier = pipeline("sentiment-analysis", device=get_device(disable_mps=False), model="lxyuan/distilbert-base-multilingual-cased-sentiments-student", model_kwargs={"cache_dir": weights_path})
-    max_length = 512
-    review = review[:max_length]
+    model = pipeline("sentiment-analysis", device=get_device(disable_mps=False), model="lxyuan/distilbert-base-multilingual-cased-sentiments-student", model_kwargs={"cache_dir": weights_path})
+    review = review[:512]
     try:
-        label = sentiment_classifier(review)[0]['label']
-        score = sentiment_classifier(review)[0]['score']
-        return label, score
+        return model(review)[0]['label'], model(review)[0]['score']
     except:
         return None, None
 
 def get_subjectivity(review):
-    pass
-
+    from transformers import pipeline
+    model = pipeline(task="text-classification", model="cffl/bert-base-styleclassification-subjective-neutral", top_k=None, device=get_device(disable_mps=False), model_kwargs={"cache_dir": weights_path})
+    review = review[:512]
+    try:
+        outputs = model(review)[0]
+        subjectivity_score = outputs[0]["score"]
+        objectivity_score = outputs[1]["score"]
+        return subjectivity_score
+    except:
+        return None
+    
 def get_aspects(review):
+    # most important "aspects" mentioned of each product
+    # https://huggingface.co/inesbattah/transformers_amazon_reviews_topics
     pass
 
 def get_rating(review):
     from transformers import AutoTokenizer, AutoModelForSequenceClassification
     tokenizer = AutoTokenizer.from_pretrained("LiYuan/amazon-review-sentiment-analysis", device=get_device(disable_mps=False), cache_dir=weights_path)
     model = AutoModelForSequenceClassification.from_pretrained("LiYuan/amazon-review-sentiment-analysis")
-    max_length = 512
-    review = review[:max_length]
+    review = review[:512]
     try:
         inputs = tokenizer(review, return_tensors="pt")
         outputs = model(**inputs)
@@ -164,12 +144,14 @@ def preprocess(df):
     df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
     
     df = df.dropna(subset=['text', 'title', 'rating'])
+    df['text'] = df['text'].str.replace(r'<.*?>', '', regex=True) # drop html tags
+    df['title'] = df['title'].str.replace(r'<.*?>', '', regex=True)
     df['text'] = df['text'].str.strip()
     df['title'] = df['title'].str.strip()
     df = df[df['text'].str.len() > 0]
     df = df[df['title'].str.len() > 0]
 
-    # make sure to cache, this takes a while
+    # make sure to cache / upload directly to huggingface hub - inference takes a long time
     # for idx, row in tqdm(df.iterrows(), total=len(df), desc="sentiment analysis", ncols=100):
     #     review = f"{row['title']}: {row['text']}"
     #     language = get_language(review)
@@ -180,10 +162,11 @@ def preprocess(df):
 df = get_all_data(sample_size=100)
 df = preprocess(df)
 
-fst = df.iloc[11]
+fst = df.iloc[100]
 review = f"{fst['title']}: {fst['text']}"
-print(review)
+print(review[:512])
 
-actual = fst['rating']
-pred = get_rating(review)
-print(f"actual: {actual}, pred: {pred}")
+# print(f"{get_language(review)=}")
+# print(f"{get_sentiment(review)=}")
+# print(f"{get_subjectivity(review)=}")
+# print(f"{get_rating(review)=}")
