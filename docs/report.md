@@ -123,6 +123,9 @@ Which dataset(s) did you choose? Why?
 
 How did you clean/transform the data? Why?
 
+- sample because too large
+- lots of languages, so models had to be multilingual ['en' 'ro' 'vi' 'cy' 'af' 'unknown' 'de' 'sv' 'tl' 'no' 'da' 'es' 'sl' 'so' 'ca' 'fr' 'fi' 'it' 'nl']
+
 How did you solve the problem of missing values? Why?
 
 What questions did you ask of the data? Why were these good questions?

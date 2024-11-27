@@ -1,3 +1,14 @@
+import csv
+import glob
+import os
+from pathlib import Path
+from types import SimpleNamespace
+from typing import Optional
+
+import numpy as np
+import pandas as pd
+from tqdm import tqdm
+
 import pandas as pd
 import json
 import copy
@@ -99,44 +110,65 @@ def get_all_data(sample_size):
 # 
 
 
-
-# - RQ1: Are reviews for some categories of product on Amazon overall more positive than for other categories? -> sentiment analysis: polarity
-# - RQ2: Are reviews more subjective for some classes of products than for others? -> sentiment analysis: subjectivity
-# - RQ3: Which aspects of different classes of products are the most important in the reviews? -> aspect-based sentiment analysis
-# - RQ4: Can one predict the star rating from the review text? -> large language models or clustering embeddings
-
-# 
-# models
-# 
-
-# sentiment analysis (polarity)
-
-# sentiment analysis (subjectivity)
-
-# aspect-based sentiment analysis
-
-# score estimation
-# https://huggingface.co/LiYuan/amazon-review-sentiment-analysis
+# - 1) sentiment analysis
+# - 2) subjectivity analysis
+# - 3) most important "aspects" mentioned of each product
+# - 4) predicting star from rating:
+#   - or just small language model to map sentence to [1, 2, 3, 4, 5]
+#   - https://huggingface.co/LiYuan/amazon-review-sentiment-analysis
 
 
+def get_language(review):
+    from langdetect import detect
+    try:
+        return detect(review)
+    except:
+        return "unknown"
 
+
+def get_sentiment(review):
+    from transformers import pipeline
+    sentiment_classifier = pipeline("sentiment-analysis", device=get_device(disable_mps=False), model="lxyuan/distilbert-base-multilingual-cased-sentiments-student", model_kwargs={"cache_dir": weights_path})
+    # max_length = 512
+    # review = review[:max_length]
+    label = sentiment_classifier(review)[0]['label']
+    score = sentiment_classifier(review)[0]['score']
+    return label, score
 
 
 def preprocess(df):
     df = df.copy()
 
-    # clean up
     df.drop_duplicates(inplace=True)
     df.drop(columns=['images', 'asin', 'parent_asin', 'user_id'], inplace=True, errors='ignore')
+    
     df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
+    
     df = df.dropna(subset=['text', 'title', 'rating'])
     df['text'] = df['text'].str.strip()
     df['title'] = df['title'].str.strip()
+    df = df[df['text'].str.len() > 0]
+    df = df[df['title'].str.len() > 0]
 
-    # infer sentiment
-    # ...
+    # infer
+    # for idx, row in tqdm(df.iterrows(), total=len(df), desc="sentiment analysis", ncols=100):
+    #     review = f"{row['title']}: {row['text']}"
+    #     language = get_language(review)
+    #     df.at[idx, 'language'] = language
     return df
 
 
 
-df = get_all_data(sample_size=10_000)
+
+
+
+# df = get_all_data(sample_size=10_000)
+df = get_all_data(sample_size=100)
+df = preprocess(df)
+
+fst = df.iloc[0]
+review = f"{fst['title']}: {fst['text']}"
+print(review)
+
+print(get_sentiment(review))
+
