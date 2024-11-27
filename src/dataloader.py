@@ -114,32 +114,51 @@ def get_all_data(sample_size):
 # - 2) subjectivity analysis
 # - 3) most important "aspects" mentioned of each product
 # - 4) predicting star from rating:
-#   - or just small language model to map sentence to [1, 2, 3, 4, 5]
-#   - https://huggingface.co/LiYuan/amazon-review-sentiment-analysis
-
 
 def get_language(review):
     from langdetect import detect
     try:
         return detect(review)
     except:
-        return "unknown"
+        return None
 
 
 def get_sentiment(review):
     from transformers import pipeline
     sentiment_classifier = pipeline("sentiment-analysis", device=get_device(disable_mps=False), model="lxyuan/distilbert-base-multilingual-cased-sentiments-student", model_kwargs={"cache_dir": weights_path})
-    # max_length = 512
-    # review = review[:max_length]
-    label = sentiment_classifier(review)[0]['label']
-    score = sentiment_classifier(review)[0]['score']
-    return label, score
+    max_length = 512
+    review = review[:max_length]
+    try:
+        label = sentiment_classifier(review)[0]['label']
+        score = sentiment_classifier(review)[0]['score']
+        return label, score
+    except:
+        return None, None
 
+def get_subjectivity(review):
+    pass
+
+def get_aspects(review):
+    pass
+
+def get_rating(review):
+    from transformers import AutoTokenizer, AutoModelForSequenceClassification
+    tokenizer = AutoTokenizer.from_pretrained("LiYuan/amazon-review-sentiment-analysis", device=get_device(disable_mps=False), cache_dir=weights_path)
+    model = AutoModelForSequenceClassification.from_pretrained("LiYuan/amazon-review-sentiment-analysis")
+    max_length = 512
+    review = review[:max_length]
+    try:
+        inputs = tokenizer(review, return_tensors="pt")
+        outputs = model(**inputs)
+        predicted_class_idx = outputs.logits.argmax().item()
+        predicted_class = model.config.id2label[predicted_class_idx]
+        return float(predicted_class[0]) # match dataset
+    except:
+        return None
 
 def preprocess(df):
     df = df.copy()
 
-    df.drop_duplicates(inplace=True)
     df.drop(columns=['images', 'asin', 'parent_asin', 'user_id'], inplace=True, errors='ignore')
     
     df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
@@ -150,7 +169,7 @@ def preprocess(df):
     df = df[df['text'].str.len() > 0]
     df = df[df['title'].str.len() > 0]
 
-    # infer
+    # make sure to cache, this takes a while
     # for idx, row in tqdm(df.iterrows(), total=len(df), desc="sentiment analysis", ncols=100):
     #     review = f"{row['title']}: {row['text']}"
     #     language = get_language(review)
@@ -158,17 +177,13 @@ def preprocess(df):
     return df
 
 
-
-
-
-
-# df = get_all_data(sample_size=10_000)
 df = get_all_data(sample_size=100)
 df = preprocess(df)
 
-fst = df.iloc[0]
+fst = df.iloc[11]
 review = f"{fst['title']}: {fst['text']}"
 print(review)
 
-print(get_sentiment(review))
-
+actual = fst['rating']
+pred = get_rating(review)
+print(f"actual: {actual}, pred: {pred}")
