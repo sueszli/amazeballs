@@ -36,29 +36,10 @@ os.makedirs(weights_path, exist_ok=True)
 os.makedirs(output_path, exist_ok=True)
 
 
-# - RQ1: Are reviews for some categories of product on Amazon overall more positive than for other categories? -> sentiment analysis: polarity
-# - RQ2: Are reviews more subjective for some classes of products than for others? -> sentiment analysis: subjectivity
-# - RQ3: Which aspects of different classes of products are the most important in the reviews? -> aspect-based sentiment analysis
-# - RQ4: Can one predict the star rating from the review text? -> large language models or clustering embeddings
-
-# 
-# models
-# 
-
-# sentiment analysis (polarity)
-
-# sentiment analysis (subjectivity)
-
-# aspect-based sentiment analysis
-
-# score estimation
-# https://huggingface.co/LiYuan/amazon-review-sentiment-analysis
-
-
-
 # 
 # data
 # 
+
 
 def get_asin2category():
     # use `parent_asin` key from metadata to look up the category of each reviewed item
@@ -112,9 +93,34 @@ def get_all_data(sample_size):
     print(f"total data size: {data.memory_usage(deep=True).sum() / 1e9:.2f} gb")
     return data
 
+
 # 
 # preprocessing
 # 
+
+
+
+# - RQ1: Are reviews for some categories of product on Amazon overall more positive than for other categories? -> sentiment analysis: polarity
+# - RQ2: Are reviews more subjective for some classes of products than for others? -> sentiment analysis: subjectivity
+# - RQ3: Which aspects of different classes of products are the most important in the reviews? -> aspect-based sentiment analysis
+# - RQ4: Can one predict the star rating from the review text? -> large language models or clustering embeddings
+
+# 
+# models
+# 
+
+# sentiment analysis (polarity)
+
+# sentiment analysis (subjectivity)
+
+# aspect-based sentiment analysis
+
+# score estimation
+# https://huggingface.co/LiYuan/amazon-review-sentiment-analysis
+
+
+
+
 
 def preprocess(df):
     df = df.copy()
@@ -130,3 +136,7 @@ def preprocess(df):
     # infer sentiment
     # ...
     return df
+
+
+
+df = get_all_data(sample_size=10_000)
