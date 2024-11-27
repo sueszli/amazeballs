@@ -42,6 +42,21 @@ os.makedirs(output_path, exist_ok=True)
 # - RQ4: Can one predict the star rating from the review text? -> large language models or clustering embeddings
 
 # 
+# models
+# 
+
+# sentiment analysis (polarity)
+
+# sentiment analysis (subjectivity)
+
+# aspect-based sentiment analysis
+
+# score estimation
+# https://huggingface.co/LiYuan/amazon-review-sentiment-analysis
+
+
+
+# 
 # data
 # 
 
@@ -96,3 +111,22 @@ def get_all_data(sample_size):
     data.to_csv(cachepath, index=False)
     print(f"total data size: {data.memory_usage(deep=True).sum() / 1e9:.2f} gb")
     return data
+
+# 
+# preprocessing
+# 
+
+def preprocess(df):
+    df = df.copy()
+
+    # clean up
+    df.drop_duplicates(inplace=True)
+    df.drop(columns=['images', 'asin', 'parent_asin', 'user_id'], inplace=True, errors='ignore')
+    df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
+    df = df.dropna(subset=['text', 'title', 'rating'])
+    df['text'] = df['text'].str.strip()
+    df['title'] = df['title'].str.strip()
+
+    # infer sentiment
+    # ...
+    return df
