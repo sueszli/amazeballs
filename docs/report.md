@@ -1,5 +1,5 @@
 ---
-title: "Amazon Dataset"
+title: "Report: Amazon Reviews'23"
 output: pdf_document
 documentclass: article
 papersize: a4
@@ -27,23 +27,33 @@ header-includes:
     - \DefineVerbatimEnvironment{verbatim}{Verbatim}{fontsize=\fontsize{6pt}{6pt}}
 ---
 
-
 <!-- 
 
-- exercise: https://tuwel.tuwien.ac.at/pluginfile.php/4247741/mod_resource/content/1/DOPP2024_Exercise2.pdf
-        - task 21: amazon dataset
-- amazon dataset: https://amazon-reviews-2023.github.io/ (most recent, huggingface for easy download)
-- algorithms benchmark: https://paperswithcode.com/dataset/amazon-review
+https://tuwel.tuwien.ac.at/pluginfile.php/4247741/mod_resource/content/1/DOPP2024_Exercise2.pdf
+
+deliverables:
+
+- plan / review meeting document (1 page)
+        - research questions
+        - datasets planned to use
+        - methodology to answer questions
+        - division of work
+- report (2 pages)
+        - management summary document
+        - main insights
+- a single jupyter notebook
+        - like a more verbose version of the report
+- presentation (10min)
 
 -->
-
-# intro
 
 this is just as much about the "data science process" as it is about the results.
 
 this is an open ended task.
 
 we're free to pick whatever dataset we like, and modify questions with supervisor's approval.
+
+# intro
 
 *data science process*
 
@@ -86,17 +96,47 @@ we're free to pick whatever dataset we like, and modify questions with superviso
 
 # research questions
 
+motivation on why this matters
+
 Question 21:
 
-- RQ1: Are reviews for some categories of product on Amazon overall more positive than for other categories?
-- RQ2: Are reviews more subjective for some classes of products than for others?
-- RQ3: Which aspects of different classes of products are the most important in the reviews?
-- RQ4: Can one predict the star rating from the review text?
+- RQ1: Are reviews for some categories of product on Amazon overall more positive than for other categories? (sentiment analysis: polarity)
+- RQ2: Are reviews more subjective for some classes of products than for others? (sentiment analysis: subjectivity)
+- RQ3: Which aspects of different classes of products are the most important in the reviews? (topic modeling, aspect extraction)
+- RQ4: Can one predict the star rating from the review text? (sentence to star rating classification)
 
 # methodology
 
-introduce the task we have chosen and why we chose it.
+- algorithms benchmark: https://paperswithcode.com/dataset/amazon-review
 
-introduce our research questions.
+Which dataset(s) did you choose? Why?
+
+- https://amazon-reviews-2023.github.io/
+- https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023
+        - easier to download from huggingface
+        - Larger Dataset: We collected 571.54M reviews, 245.2% larger than the last version;
+        - Newer Interactions: Current interactions range from May. 1996 to Sep. 2023;
+        - Richer Metadata: More descriptive features in item metadata;
+        - Fine-grained Timestamp: Interaction timestamp at the second or finer level;
+        - Cleaner Processing: Cleaner item metadata than previous versions;
+        - Standard Splitting: Standard data splits to encourage RecSys benchmarking.
+
+How did you clean/transform the data? Why?
+
+How did you solve the problem of missing values? Why?
+
+What questions did you ask of the data? Why were these good questions?
+
+What were the answers to these questions? How did you obtain them? Do the answers make sense?
+
+Were there any difficulties in analysing the data?
+
+What were the key insights obtained?
+
+What are potential biases in the data and analysis?
+
+Which Data Science tools and techniques were learned during this exercise?
+
+How was the work divided up between the members of the group?
 
 # results

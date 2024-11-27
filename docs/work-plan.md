@@ -1,5 +1,5 @@
 ---
-title: "Work Plan: Amazon Dataset"
+title: "Work Plan: Amazon Reviews'23"
 output: pdf_document
 documentclass: article
 papersize: a4
@@ -29,5 +29,3 @@ header-includes:
 
 
 <!-- Upload 1 page work plan for the Exercise 2 review meeting -->
-
-<!-- we could maybe also just upload the exercise itself -->
