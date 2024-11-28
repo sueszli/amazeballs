@@ -164,6 +164,8 @@ df <- df[!is.na(df$aspects) & df$aspects != "" & df$category != "unknown",]
 df$category[is.na(df$category)] <- "unknown"
 ```
 
+After some initial exploratory data analysis and visualization, we were able to answer the research questions visually and quantitatively. The results are as follows.
+
 ## RQ1: Sentiment Analysis
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=20, fig.height=8}
@@ -192,6 +194,10 @@ p2 <- ggplot(median_sentiment, aes(x = factor(Category, levels = ordered_categor
 grid.arrange(p1, p2, ncol = 2)
 ```
 
+First, we analyzed the results of our sentiment analysis model and additionally compared it with the distribution of ratings per category. For the reviews we used a scatter plot to visualize the distribution of ratings per category and for the median sentiment we used a horizontal bar plot. Against our expectations, the sentiment scores did not correlate with the ratings. Specifically, categories with significantly fewer 5-star reviews, such as "Software" still had a beyond global median sentiment score of around 0.8. This suggests that the sentiment scores are not directly related to the ratings, and that the sentiment analysis model may be capturing a different aspect of the reviews than the star ratings.
+
+The sentiment scores were generally slightly skewed towards the positive side, with a total median sentiment score of 0.74. The sentiment scores were also quite consistent across categories, and only dropped below the global average on around half of the categories. The lowest median sentiment score was observed for the "Beauty and Personal Care" category at around 0.62 and the highest for the "Digital Music" category at around 0.85.
+
 ## RQ2: Subjectivity Analysis
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=20, fig.height=8}
@@ -217,6 +223,8 @@ p2 <- ggplot(median_subjectivity, aes(x = factor(Category, levels = ordered_cate
 
 grid.arrange(p1, p2, ncol = 2)
 ```
+
+Next, to inspect the subjectivity of each category, we used a boxplot to visualize the distribution of subjectivity scores per category and a horizontal bar plot to show the median subjectivity score. These two plots are essentially identical, given that a box-plot already marks the median, but for the sake of comparibility with the previous plot we decided to use a bar plot as well. We can observe a view highly objective outliers, particularly in the "Home and Kitchen" and "Digital Music" categories despite having the highest median subjectivity scores. The least median subjectivity scores were counterintuitively assigned to "Musical Instruments", "Movies and TV" and "Tools and Home Improvement". This counterintuitive distribution of subjectivity scores suggests that (1) either the model may not be accurately capturing the subjectivity of the reviews or that (2) the reviewers use a different language or style in their reviews independent of their emotional attachment to the product.
 
 ## RQ3: Aspect Extraction
 
@@ -255,6 +263,8 @@ ggplot(aspects_df, aes(x = reorder(aspects, n), y = n)) +
     theme(strip.text = element_text(face = "bold"), axis.text = element_text(size = 9))
 ```
 
+The keyword extraction algorithm did not perform as well as expected, but it was able to extract some of the most common aspects mentioned in the reviews. The top 30 aspects mentioned in reviews by category are visualized in the first horizontal bar-plot and each total sum is further decomposed into the occurences per category. The second plot shows the top 5 most common aspects mentioned in reviews by category. The most common aspects mentioned in reviews across all categories were "Amazon", "Buy" and "Check". The top 5 aspects per individual category were more diverse but as expected, related to the domain of the category. For example, the "Magazine Subscriptions" category had aspects like "articles", "read", "magazine", "paid", "bought" which all relate to the content of the magazine. Overall the aspect extraction task was not as successful and insightful as we had hoped, but it was nonetheless an interesting technical challenge.
+
 ## RQ4: Star Rating Prediction
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=15, fig.height=5}
@@ -281,3 +291,7 @@ knitr::kable(data.frame(
     "Count" = c(confusion_matrix[2,2], confusion_matrix[2,1], confusion_matrix[1,2], confusion_matrix[1,1])
 ), row.names = FALSE)
 ```
+
+Finally, we evaluated the performance of our star rating prediction model. The confusion matrix shows the distribution of actual vs predicted ratings, with the diagonal representing correct predictions. The model achieved an accuracy of 0.68, with most errors occurring in the misclassification of 4-star and 1-star reviews. The distribution of rating prediction errors shows a slight skew towards underestimating the rating, with more negative prediction errors than positive ones. This suggests that the model may be more conservative in its predictions, tending to assign lower ratings than the actual reviews. However these metrics have to be taken with a grain of salt as we don't have any insights into the training process of the model and it might as well be overfitting.
+
+In conclusion, we successfully answered the research questions using a combination of NLP techniques and data analysis. The results provided valuable insights into review sentiment, subjectivity, aspect extraction and star rating prediction, highlighting the complexities and nuances of consumer feedback on Amazon.
