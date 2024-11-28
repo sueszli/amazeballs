@@ -235,6 +235,5 @@ if __name__ == "__main__":
     df = preprocess(df)
     df = add_inferences(df, sample_size=100)
 
-    # save
     df.to_csv(data_path / "data.csv", index=False)
     print("saved data")
