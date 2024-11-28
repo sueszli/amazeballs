@@ -145,7 +145,7 @@ Tasks were divided based on expertise: data preprocessing, sentiment analysis, a
 <!-- What were the key insights obtained? -->
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-deps <- c("ISLR", "Metrics", "tidyr", "microbenchmark", "dplyr", "gridExtra", "readxl", "cvTools", "leaps", "assertthat", "assertr", "testthat")
+deps <- c("ISLR", "Metrics", "tidyr", "microbenchmark", "dplyr", "gridExtra", "readxl", "cvTools", "leaps", "assertthat", "assertr", "testthat", "lubridate", "ggplot2", "stringr", "scales", "viridis")
 for (p in deps) {
     if (!requireNamespace(p, quietly = TRUE)) {
         install.packages(p, repos = "https://cran.rstudio.com")
@@ -155,18 +155,67 @@ for (p in deps) {
 
 options(scipen=999)
 set.seed(42)
+
+df <- read.csv("../data/data.csv", header = TRUE, sep = ",")
+
+df$category[is.na(df$category)] <- "unknown"
 ```
 
-```{r, echo=TRUE, fig.width=15, fig.height=4}
-# multivariate normal distribution
-n <- 1000
-mu <- c(0, 0)
-sigma <- matrix(c(1, 0.5, 0.5, 1), nrow=2)
-data <- MASS::mvrnorm(n, mu, sigma)
+## RQ1: Sentiment Analysis
 
-# plot
-par(mfrow=c(1, 2))
-plot(data, col=rgb(0, 0, 0, 0.5), pch=19, xlab="X1", ylab="X2", main="Scatterplot")
-hist(data[,1], col=rgb(0, 0, 0, 0.5), xlab="X1", main="Histogram")
-hist(data[,2], col=rgb(0, 0, 0, 0.5), xlab="X2", main="Histogram")
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=15, fig.height=8}
+median_sentiment <- aggregate(df$sentiment_score, by = list(Category = df$category), FUN = median)
+ordered_categories <- median_sentiment$Category[order(median_sentiment$x)]
+
+p1 <- ggplot(df, aes(x = factor(category, levels = ordered_categories), y = rating)) +
+    geom_count(aes(size = after_stat(prop), group = 1)) +
+    scale_size_area(max_size = 7) +
+    coord_flip() +
+    labs(title = "Rating Distribution by Product Category", x = "Category", y = "Rating") +
+    theme(axis.text.y = element_text(size = 8)) +
+    theme_minimal()
+
+global_median <- median(df$sentiment_score, na.rm = TRUE)
+
+p2 <- ggplot(median_sentiment, aes(x = factor(Category, levels = ordered_categories), y = x)) + 
+    geom_bar(stat = 'identity', fill = 'gray') + 
+    geom_hline(yintercept = global_median, color = "red", linetype = "dashed", size = 1, alpha = 0.5) +
+    annotate("text", x = 1, y = global_median, label = "Global Median", vjust = -1, hjust = 1.1, color = "red") +
+    coord_flip() +
+    labs(title = 'Median Sentiment Score by Product Category', x = 'Category', y = 'Median Sentiment Score') +       
+    theme(axis.text.y = element_text(size = 8)) +
+    theme_minimal()
+
+grid.arrange(p1, p2, ncol = 2)
 ```
+
+## RQ2: Subjectivity Analysis
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=15, fig.height=8}
+p1 <- ggplot(df, aes(x = reorder(category, subjectivity_score, median), y = subjectivity_score)) +
+    geom_boxplot(fill = "lightgray") +
+    coord_flip() +
+    theme_minimal() +
+    labs(title = "Subjectivity Score Distribution by Product Category", x = "Category", y = "Subjectivity Score") +
+    theme(axis.text.y = element_text(size = 8))
+
+median_subjectivity <- aggregate(df$subjectivity_score, by = list(Category = df$category), FUN = median)
+ordered_categories_subjectivity <- median_subjectivity$Category[order(median_subjectivity$x)]
+global_median_subjectivity <- median(df$subjectivity_score, na.rm = TRUE)
+
+p2 <- ggplot(median_subjectivity, aes(x = factor(Category, levels = ordered_categories_subjectivity), y = x)) + 
+    geom_bar(stat = 'identity', fill = 'gray') + 
+    geom_hline(yintercept = global_median_subjectivity, color = "red", linetype = "dashed", size = 1, alpha = 0.5) +
+    annotate("text", x = 1, y = global_median_subjectivity, label = "Global Median", vjust = -1, hjust = 1.1, color = "red") +
+    coord_flip() +
+    labs(title = 'Median Subjectivity Score by Product Category', x = 'Category', y = 'Median Subjectivity Score') +       
+    theme(axis.text.y = element_text(size = 8)) +
+    theme_minimal()
+
+grid.arrange(p1, p2, ncol = 2)
+```
+
+## RQ3: Aspect Extraction
+
+## RQ4: Star Rating Prediction
+
