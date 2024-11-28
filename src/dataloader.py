@@ -50,6 +50,8 @@ def get_all_categories():
 
 
 def get_category_data(category, sample_size):
+    import datasets
+
     # cache hit
     cachepath = dataset_path / f"cache_{category}_{sample_size}.csv"
     if cachepath.exists():
@@ -126,20 +128,18 @@ def get_subjectivity(review):
         return None
 
 
-def get_aspects(review):
-    from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
+# def get_aspects(review):
+#     from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 
-    model_name = "yangheng/deberta-v3-large-absa-v1.1"
-    tokenizer = AutoTokenizer.from_pretrained(model_name, padding=True, truncation=True, max_length=512, cache_dir=weights_path)
-    model = AutoModelForSequenceClassification.from_pretrained(model_name, device_map="auto", cache_dir=weights_path)
-    classifier = pipeline("text-classification", model=model, tokenizer=tokenizer, device_map="auto", cache_dir=weights_path)
-    review = review[:512]
-    try:
-        outputs = classifier(review)
-        return outputs
-    except Exception as e:
-        print(f"Error processing review: {str(e)}")
-        return None
+#     model_name = "yangheng/deberta-v3-large-absa-v1.1"
+#     tokenizer = AutoTokenizer.from_pretrained(model_name, padding=True, truncation=True, max_length=512, cache_dir=weights_path, local_files_only=False)
+#     model = AutoModelForSequenceClassification.from_pretrained(model_name, cache_dir=weights_path, local_files_only=False)
+#     classifier = pipeline("text-classification", model=model, tokenizer=tokenizer, device_map="auto")
+#     review = review[:512]
+
+#     outputs = classifier(review)
+#     return outputs
+
 
 
 def get_rating(review):
@@ -173,7 +173,7 @@ def preprocess(df):
     df = df[df["text"].str.len() > 0]
     df = df[df["title"].str.len() > 0]
 
-    # make sure to cache / upload directly to huggingface hub - inference takes a long time
+    # make sure to store everything after you're done -> then we only load data from huggingface instead of doing all of this
     # for idx, row in tqdm(df.iterrows(), total=len(df), desc="sentiment analysis", ncols=100):
     #     review = f"{row['title']}: {row['text']}"
     #     language = get_language(review)
@@ -192,4 +192,14 @@ print(review[:512])
 # print(f"{get_sentiment(review)=}")
 # print(f"{get_subjectivity(review)=}")
 # print(f"{get_rating(review)=}")
-print(f"{get_aspects(review)=}")
+
+from setfit import AbsaModel
+
+model = AbsaModel.from_pretrained(
+    "sentence-transformers/all-MiniLM-L6-v2",
+    "sentence-transformers/all-mpnet-base-v2",
+    spacy_model="en_core_web_sm",
+    device=get_device(disable_mps=False),
+    cache_dir=weights_path,
+)
+
