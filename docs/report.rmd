@@ -15,7 +15,7 @@ header-includes:
     - \usepackage{titling}
     - \setlength{\droptitle}{-15pt}
     - \pretitle{\vspace{-30pt}\begin{center}\LARGE}
-    - \posttitle{\end{center}\vspace{-70pt}}    
+    - \posttitle{\end{center}\vspace{-50pt}}    
     # content
     - \usepackage{scrextend}
     - \changefontsizes{8pt}
@@ -36,7 +36,7 @@ this is just as much about the "data science process" as it is about the results
 
 this is an open ended task.
 
-we're free to pick whatever dataset we like, and modify questions with supervisor's approval.
+we're free to pick whatever dataset we like and modify questions with supervisor's approval.
 
 deliverables:
 
@@ -66,7 +66,11 @@ The process which we followed, is more formally known as CRISP-DM (Cross-Industr
 
 # Methodology
 
-First we define the research questions that we aim to answer. Our team has selected task 21 from the list provided by the course team and did not further modify it. The research questions are as follows:
+<!-- What questions did you ask of the data? Why were these good questions? -->
+
+#### Research Questions
+
+First we define the research questions that we aim to answer. Our team has selected task 21 from the list provided by the course team and did not further modify them, as they already cover a wide range of topics for customer review analysis. The research questions are as follows:
 
 - (RQ1) Are reviews for some categories of product on Amazon overall more positive than for other categories?
 - (RQ2) Are reviews more subjective for some classes of products than for others?
@@ -93,41 +97,49 @@ To answer these questions, we chose the [Amazon Reviews'23 dataset](https://hugg
 
 <!-- How did you clean/transform the data? Why? -->
 
-- sample because too large
-        - 100,000 samples per category (2.92 GB): doesn't fit in memory for plotting
-        - 10,000 samples per category (0.33 GB): inference would take 8 days (339880 items with 2it/s)
-        - 1,000 samples per category (0.03 GB): inference would take 19 hours (33994 items with 2it/s)
-        - 100 samples per category (<0.00 GB): inference would take 2 hours (3399 items with 2it/s) — this is what we used, it was small enough to push to git (2 MB)
-- lots of languages, so models had to be multilingual
-        - some of them were, others weren't
+#### Data Preprocessing
+
+The data cleaning and transformation process involved several key steps to manage the dataset's size and ensure it was suitable for analysis. Initially, the dataset contained 100,000 samples per category, which amounted to 2.92 GB and was too large to fit in memory for plotting. This necessitated reducing the dataset size to make it manageable.  First, we considered sampling 10,000 samples per category, which would reduce the dataset size to 0.33 GB. However, this would have resulted in an inference time of 8 days due to the large number of items (339,880) and the slow processing speed of 2 items per second. Subsequently, we explored sampling 1,000 samples per category, which would further reduce the dataset size to 0.03 GB. However, this would still require 19 hours for inference, which was deemed too long for practical use. Finally, we decided to sample only 100 samples per category, resulting in a dataset size of less than 0.00 GB. This smaller dataset contained 3,399 items, which could be processed within a reasonable timeframe of approximately 2 hours at a rate of 2 items per second. This approach allowed for effective model inference and analysis while maintaining a manageable dataset size and was small enough to push to git.
+
+The data transformation process involved (1) loading the data from HuggingFace and intermediate caching on multiple levels to avoid redundant bandwidth usage, (2) sampling the data to reduce the dataset size using a fixed seed for reproducibility, (3) preprocessing the data by dropping unnecessary columns, converting timestamps to datetime objects, removing rows with missing values in critical columns, and cleaning text fields by stripping HTML tags and whitespace, and filtering out empty strings. Finally, the cleaned data was prepared for inference tasks and the subsequent analysis.
 
 <!-- How did you solve the problem of missing values? Why? -->
 
-<!-- What questions did you ask of the data? Why were these good questions? -->
+#### Missing Values
 
-<!-- What were the answers to these questions? How did you obtain them? Do the answers make sense? -->
+Missing values in the dataset are addressed through a combination of data preprocessing techniques. The primary method used is listwise deletion, where rows with missing values in specific columns are removed. This is evident in the preprocess function, where the `dropna` method is applied to remove rows with missing values in the "text", "title", and "rating" columns. This approach ensures that only complete cases are included in subsequent analyses, which can help maintain the integrity of the dataset but may lead to a loss of data if many entries are incomplete. Additionally, the code handles missing values by cleaning text data to ensure that any remaining entries are valid. For instance, HTML tags are stripped from the "text" and "title" fields, and whitespace is removed. This step ensures that any non-informative or empty text entries are filtered out, thereby improving data quality.
 
-<!-- Were there any difficulties in analysing the data? -->
-
+The choice of listwise deletion is appropriate when missing data is assumed to be missing completely at random (MCAR), as it can prevent bias in analysis if this assumption holds true. However, if the data is not MCAR, this method might introduce bias and reduce statistical power. Alternative methods such as imputation (mean, median, mode) or more sophisticated techniques like multiple imputation could be considered if preserving all available data is critical and if the missingness pattern allows for such methods.
 
 <!-- What are potential biases in the data and analysis? -->
 
 #### Potential Biases
 
+Firstly, there is a significant sampling bias due to the nature of the data collection process, which relies on reviews from Amazon. This platform-specific focus can lead to a lack of representativeness, as it excludes opinions from other e-commerce platforms and may reflect the purchasing habits and preferences unique to Amazon users. Additionally, many reviews are from users who have only left a single review, which suggests a reporting bias where occasional reviewers might not provide as balanced or informed feedback as more frequent reviewers.
+
+The data processing phase introduces further biases. For instance, reviews are truncated to 512 tokens for analysis, potentially omitting important context or nuances found in longer reviews. Moreover, the language detection and sentiment analysis models used are primarily trained on English data, which could introduce language bias if reviews in other languages are not accurately processed or interpreted.
+
+The models employed for sentiment analysis and aspect extraction also carry intrinsic biases. These models are trained on specific datasets that may not fully capture the diversity of consumer opinions or product types found on Amazon. For example, sentiment analysis models might oversimplify complex sentiments into basic categories like positive or negative, thus failing to capture more nuanced consumer feedback.
+
+Additionally, there is a notable presence of fake, paid, or incentivized reviews on Amazon, which can significantly skew the perceived quality and satisfaction levels of products. These practices compromise the reliability of reviews and can mislead consumers by presenting an inaccurate picture of product quality. The combination of these biases suggests that while Amazon reviews can provide valuable insights, they should be interpreted with caution and supplemented with more objective sources when possible.
+
 <!-- Which Data Science tools and techniques were learned during this exercise? -->
+<!-- Were there any difficulties in analysing the data? -->
 
-Due to our sampling strategy, we might introduce bias by selecting a limited number of reviews per category, which might not be representative of the entire dataset. Additionally, the pre-trained sentiment analysis and aspect extraction models are trained on specific data, potentially leading to errors in non-English reviews or niche categories. We tried to mitigate the latter by filtering aspects with high confidence scores and using multilingual models, but challenges remain in handling these cases.
+#### Challenges & Lessons Learned
 
-#### Data Science Tools & Techniques Learned
+This project involved a range of data science tools and techniques. From a technical perspective, we used a reproducible `virtualenv` environment, a `venv` to `docker` and `conda` transpiler written in a makefile, to ensure both portability and reproducibility through the compilation of a requirements text file. Additionally, we used the `datasets` library to load and preprocess the dataset. This is standard practice. Using these technologies we learned how to handle the challenges of working on data in teams, and managing large datasets with very limited computational resources.
 
-This project involved a range of data science tools and techniques. From a technical perspective, we used Python libraries like Pandas for data manipulation, Hugging Face Transformers for sentiment analysis and text classification, and sampling techniques for efficient handling of large datasets. We also explored aspect extraction using keyword extraction and aspect-based sentiment analysis. The project provided hands-on experience with real-world data analysis, including data preprocessing, model training, and evaluation. The team also gained insights into the challenges of working with large datasets, multilingual reviews, and the importance of sampling and model selection in data analysis.
+From a theoretical perspective We also explored aspect extraction using keyword extraction and aspect-based sentiment analysis. The project provided hands-on experience with real-world data analysis, including data preprocessing, model training and evaluation. The team also gained insights into the challenges of working with large datasets, multilingual reviews and the importance of sampling and model selection in data analysis.
 
 <!-- How was the work divided up between the members of the group? -->
 
 #### Team Work Division
 
-Tasks were divided based on expertise: data preprocessing, sentiment analysis, aspect extraction and sampling were handled by different team members. Each person focused on the components that best suited their skills. We mostly worked in person and collaborated exclusively through pair programming sessions.
+Tasks were divided based on expertise: data preprocessing, sentiment analysis, aspect extraction and sampling were handled by different team members. Each person focused on the components that best suited their skills. We exclusively worked in-person and collaborated through pair-programming sessions.
 
-# Findings
+# Results
+
+<!-- What were the answers to these questions? How did you obtain them? Do the answers make sense? -->
 
 <!-- What were the key insights obtained? -->
