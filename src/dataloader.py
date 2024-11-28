@@ -121,7 +121,8 @@ def get_language(review):
 
     try:
         return detect(review)
-    except:
+    except Exception as e:
+        print("error get_language:", e)
         return None
 
 
@@ -132,7 +133,8 @@ def get_sentiment(review):
     review = review[:512]
     try:
         return model(review)[0]["label"], model(review)[0]["score"]
-    except:
+    except Exception as e:
+        print("error get_sentiment:", e)
         return None, None
 
 
@@ -146,7 +148,8 @@ def get_subjectivity(review):
         subjectivity_score = outputs[0]["score"]
         objectivity_score = outputs[1]["score"]
         return subjectivity_score
-    except:
+    except Exception as e:
+        print("error get_subjectivity:", e)
         return None
 
 
@@ -178,7 +181,8 @@ def get_aspects(review):
     try:
         keywords = kw_extractor.extract_keywords(review)
         return [kw for kw, score in keywords if score > 0.3]
-    except:
+    except Exception as e:
+        print("error get_aspects:", e)
         return None
 
 
@@ -194,7 +198,8 @@ def get_rating(review):
         predicted_class_idx = outputs.logits.argmax().item()
         predicted_class = model.config.id2label[predicted_class_idx]
         return float(predicted_class[0])  # match dataset
-    except:
+    except Exception as e:
+        print("error get_rating:", e)
         return None
 
 
