@@ -143,3 +143,30 @@ Tasks were divided based on expertise: data preprocessing, sentiment analysis, a
 <!-- What were the answers to these questions? How did you obtain them? Do the answers make sense? -->
 
 <!-- What were the key insights obtained? -->
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+deps <- c("ISLR", "Metrics", "tidyr", "microbenchmark", "dplyr", "gridExtra", "readxl", "cvTools", "leaps", "assertthat", "assertr", "testthat")
+for (p in deps) {
+    if (!requireNamespace(p, quietly = TRUE)) {
+        install.packages(p, repos = "https://cran.rstudio.com")
+    }
+    library(p, character.only = TRUE)
+}
+
+options(scipen=999)
+set.seed(42)
+```
+
+```{r, echo=TRUE, fig.width=15, fig.height=4}
+# multivariate normal distribution
+n <- 1000
+mu <- c(0, 0)
+sigma <- matrix(c(1, 0.5, 0.5, 1), nrow=2)
+data <- MASS::mvrnorm(n, mu, sigma)
+
+# plot
+par(mfrow=c(1, 2))
+plot(data, col=rgb(0, 0, 0, 0.5), pch=19, xlab="X1", ylab="X2", main="Scatterplot")
+hist(data[,1], col=rgb(0, 0, 0, 0.5), xlab="X1", main="Histogram")
+hist(data[,2], col=rgb(0, 0, 0, 0.5), xlab="X2", main="Histogram")
+```

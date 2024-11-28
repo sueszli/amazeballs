@@ -5,7 +5,9 @@
 #    pip-compile --output-file=requirements.txt requirements.in
 #
 accelerate==1.1.1
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   sentence-transformers
 aiohappyeyeballs==2.4.3
     # via
     #   -r requirements.in
@@ -19,6 +21,10 @@ aiosignal==1.3.1
     # via
     #   -r requirements.in
     #   aiohttp
+annotated-types==0.7.0
+    # via
+    #   -r requirements.in
+    #   pydantic
 appnope==0.1.4
     # via
     #   -r requirements.in
@@ -31,8 +37,28 @@ attrs==24.2.0
     # via
     #   -r requirements.in
     #   aiohttp
+autocuda==0.16
+    # via
+    #   -r requirements.in
+    #   pyabsa
+autoflake==2.3.1
+    # via -r requirements.in
 bertopic==0.16.4
     # via -r requirements.in
+blis==0.7.11
+    # via
+    #   -r requirements.in
+    #   thinc
+boostaug==2.3.5
+    # via
+    #   -r requirements.in
+    #   pyabsa
+catalogue==2.0.10
+    # via
+    #   -r requirements.in
+    #   spacy
+    #   srsly
+    #   thinc
 certifi==2024.8.30
     # via
     #   -r requirements.in
@@ -41,11 +67,27 @@ charset-normalizer==3.4.0
     # via
     #   -r requirements.in
     #   requests
+click==8.1.7
+    # via
+    #   -r requirements.in
+    #   metric-visualizer
+    #   nltk
+    #   typer
+    #   yake
+cloudpathlib==0.20.0
+    # via
+    #   -r requirements.in
+    #   weasel
 comm==0.2.2
     # via
     #   -r requirements.in
     #   ipykernel
     #   ipywidgets
+confection==0.1.5
+    # via
+    #   -r requirements.in
+    #   thinc
+    #   weasel
 contourpy==1.3.1
     # via
     #   -r requirements.in
@@ -54,8 +96,18 @@ cycler==0.12.1
     # via
     #   -r requirements.in
     #   matplotlib
+cymem==2.0.10
+    # via
+    #   -r requirements.in
+    #   preshed
+    #   spacy
+    #   thinc
 datasets==3.1.0
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   evaluate
+    #   sentence-transformers
+    #   setfit
 debugpy==1.8.9
     # via
     #   -r requirements.in
@@ -68,7 +120,18 @@ dill==0.3.8
     # via
     #   -r requirements.in
     #   datasets
+    #   evaluate
     #   multiprocess
+en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl#sha256=86cc141f63942d4b2c5fcee06630fd6f904788d2f0ab005cce45aadb8fb73889
+    # via -r requirements.in
+et-xmlfile==2.0.0
+    # via
+    #   -r requirements.in
+    #   openpyxl
+evaluate==0.4.3
+    # via
+    #   -r requirements.in
+    #   setfit
 executing==2.1.0
     # via
     #   -r requirements.in
@@ -80,6 +143,11 @@ filelock==3.16.1
     #   huggingface-hub
     #   torch
     #   transformers
+findfile==2.0.1
+    # via
+    #   -r requirements.in
+    #   metric-visualizer
+    #   pyabsa
 fonttools==4.55.0
     # via
     #   -r requirements.in
@@ -93,8 +161,17 @@ fsspec[http]==2024.9.0
     # via
     #   -r requirements.in
     #   datasets
+    #   evaluate
     #   huggingface-hub
     #   torch
+gitdb==4.0.11
+    # via
+    #   -r requirements.in
+    #   gitpython
+gitpython==3.1.43
+    # via
+    #   -r requirements.in
+    #   pyabsa
 hdbscan==0.8.40
     # via
     #   -r requirements.in
@@ -104,7 +181,9 @@ huggingface-hub==0.26.2
     #   -r requirements.in
     #   accelerate
     #   datasets
+    #   evaluate
     #   sentence-transformers
+    #   setfit
     #   tokenizers
     #   transformers
 idna==3.10
@@ -121,18 +200,26 @@ ipython==8.29.0
     #   ipywidgets
 ipywidgets==8.1.5
     # via -r requirements.in
+isort==5.13.2
+    # via -r requirements.in
 jedi==0.19.2
     # via
     #   -r requirements.in
     #   ipython
+jellyfish==1.1.0
+    # via
+    #   -r requirements.in
+    #   yake
 jinja2==3.1.4
     # via
     #   -r requirements.in
+    #   spacy
     #   torch
 joblib==1.4.2
     # via
     #   -r requirements.in
     #   hdbscan
+    #   nltk
     #   pynndescent
     #   scikit-learn
 jupyter-client==8.6.3
@@ -152,13 +239,29 @@ kiwisolver==1.4.7
     # via
     #   -r requirements.in
     #   matplotlib
+langcodes==3.5.0
+    # via
+    #   -r requirements.in
+    #   spacy
 langdetect==1.0.9
     # via -r requirements.in
+language-data==1.3.0
+    # via
+    #   -r requirements.in
+    #   langcodes
 llvmlite==0.43.0
     # via
     #   -r requirements.in
     #   numba
     #   pynndescent
+marisa-trie==1.2.1
+    # via
+    #   -r requirements.in
+    #   language-data
+markdown-it-py==3.0.0
+    # via
+    #   -r requirements.in
+    #   rich
 markupsafe==3.0.2
     # via
     #   -r requirements.in
@@ -166,12 +269,22 @@ markupsafe==3.0.2
 matplotlib==3.9.2
     # via
     #   -r requirements.in
+    #   metric-visualizer
     #   plotnine
+    #   tikzplotlib
 matplotlib-inline==0.1.7
     # via
     #   -r requirements.in
     #   ipykernel
     #   ipython
+mdurl==0.1.2
+    # via
+    #   -r requirements.in
+    #   markdown-it-py
+metric-visualizer==0.9.13.post1
+    # via
+    #   -r requirements.in
+    #   pyabsa
 mizani==0.13.0
     # via
     #   -r requirements.in
@@ -189,6 +302,17 @@ multiprocess==0.70.16
     # via
     #   -r requirements.in
     #   datasets
+    #   evaluate
+murmurhash==1.0.11
+    # via
+    #   -r requirements.in
+    #   preshed
+    #   spacy
+    #   thinc
+natsort==8.4.0
+    # via
+    #   -r requirements.in
+    #   metric-visualizer
 nest-asyncio==1.6.0
     # via
     #   -r requirements.in
@@ -196,21 +320,30 @@ nest-asyncio==1.6.0
 networkx==3.4.2
     # via
     #   -r requirements.in
+    #   pyabsa
     #   torch
+    #   yake
+nltk==3.9.1
+    # via
+    #   -r requirements.in
+    #   textblob
 numba==0.60.0
     # via
     #   -r requirements.in
     #   pynndescent
     #   umap-learn
-numpy==2.0.2
+numpy==1.26.4
     # via
     #   -r requirements.in
     #   accelerate
     #   bertopic
+    #   blis
     #   contourpy
     #   datasets
+    #   evaluate
     #   hdbscan
     #   matplotlib
+    #   metric-visualizer
     #   mizani
     #   numba
     #   pandas
@@ -218,28 +351,45 @@ numpy==2.0.2
     #   plotnine
     #   scikit-learn
     #   scipy
+    #   seqeval
+    #   spacy
     #   statsmodels
+    #   thinc
+    #   tikzplotlib
     #   torchvision
     #   transformers
     #   umap-learn
+    #   yake
+openpyxl==3.1.5
+    # via
+    #   -r requirements.in
+    #   metric-visualizer
 packaging==24.2
     # via
     #   -r requirements.in
     #   accelerate
     #   datasets
+    #   evaluate
     #   huggingface-hub
     #   ipykernel
     #   matplotlib
     #   plotly
+    #   setfit
+    #   spacy
     #   statsmodels
+    #   thinc
     #   transformers
+    #   weasel
 pandas==2.2.3
     # via
     #   -r requirements.in
     #   bertopic
     #   datasets
+    #   evaluate
+    #   metric-visualizer
     #   mizani
     #   plotnine
+    #   pyabsa
     #   statsmodels
 parso==0.8.4
     # via
@@ -258,6 +408,7 @@ pillow==11.0.0
     #   -r requirements.in
     #   matplotlib
     #   sentence-transformers
+    #   tikzplotlib
     #   torchvision
 platformdirs==4.3.6
     # via
@@ -269,6 +420,11 @@ plotly==5.24.1
     #   bertopic
 plotnine==0.14.3
     # via -r requirements.in
+preshed==3.0.9
+    # via
+    #   -r requirements.in
+    #   spacy
+    #   thinc
 prompt-toolkit==3.0.48
     # via
     #   -r requirements.in
@@ -278,8 +434,10 @@ propcache==0.2.0
     #   -r requirements.in
     #   aiohttp
     #   yarl
-protobuf==5.29.0
-    # via -r requirements.in
+protobuf==3.20.3
+    # via
+    #   -r requirements.in
+    #   pyabsa
 psutil==6.1.0
     # via
     #   -r requirements.in
@@ -293,14 +451,34 @@ pure-eval==0.2.3
     # via
     #   -r requirements.in
     #   stack-data
+pyabsa==2.4.1.post1
+    # via
+    #   -r requirements.in
+    #   boostaug
 pyarrow==18.1.0
     # via
     #   -r requirements.in
     #   datasets
+pydantic==2.10.2
+    # via
+    #   -r requirements.in
+    #   confection
+    #   spacy
+    #   thinc
+    #   weasel
+pydantic-core==2.27.1
+    # via
+    #   -r requirements.in
+    #   pydantic
+pyflakes==3.2.0
+    # via
+    #   -r requirements.in
+    #   autoflake
 pygments==2.18.0
     # via
     #   -r requirements.in
     #   ipython
+    #   rich
 pynndescent==0.5.13
     # via
     #   -r requirements.in
@@ -315,6 +493,10 @@ python-dateutil==2.9.0.post0
     #   jupyter-client
     #   matplotlib
     #   pandas
+pytorch-warmup==0.2.0
+    # via
+    #   -r requirements.in
+    #   pyabsa
 pytz==2024.2
     # via
     #   -r requirements.in
@@ -334,15 +516,27 @@ pyzmq==26.2.0
 regex==2024.11.6
     # via
     #   -r requirements.in
+    #   nltk
+    #   segtok
     #   tiktoken
     #   transformers
 requests==2.32.3
     # via
     #   -r requirements.in
     #   datasets
+    #   evaluate
     #   huggingface-hub
+    #   spacy
     #   tiktoken
     #   transformers
+    #   update-checker
+    #   weasel
+rich==13.9.4
+    # via
+    #   -r requirements.in
+    #   typer
+ruff==0.8.0
+    # via -r requirements.in
 safetensors==0.4.5
     # via
     #   -r requirements.in
@@ -353,32 +547,82 @@ scikit-learn==1.5.2
     #   -r requirements.in
     #   bertopic
     #   hdbscan
+    #   metric-visualizer
     #   pynndescent
     #   sentence-transformers
+    #   seqeval
+    #   setfit
     #   umap-learn
-scipy==1.14.1
+scipy==1.10.1
     # via
     #   -r requirements.in
     #   hdbscan
+    #   metric-visualizer
     #   mizani
     #   plotnine
     #   pynndescent
     #   scikit-learn
     #   sentence-transformers
     #   statsmodels
+    #   summa
     #   umap-learn
-sentence-transformers==3.3.1
+segtok==1.5.11
+    # via
+    #   -r requirements.in
+    #   yake
+sentence-transformers[train]==3.3.1
     # via
     #   -r requirements.in
     #   bertopic
+    #   setfit
 sentencepiece==0.2.0
+    # via
+    #   -r requirements.in
+    #   pyabsa
+seqeval==1.2.2
+    # via
+    #   -r requirements.in
+    #   pyabsa
+setfit==1.1.0
     # via -r requirements.in
+shellingham==1.5.4
+    # via
+    #   -r requirements.in
+    #   typer
 six==1.16.0
     # via
     #   -r requirements.in
     #   asttokens
     #   langdetect
     #   python-dateutil
+smart-open==7.0.5
+    # via
+    #   -r requirements.in
+    #   weasel
+smmap==5.0.1
+    # via
+    #   -r requirements.in
+    #   gitdb
+spacy==3.7.5
+    # via
+    #   -r requirements.in
+    #   en-core-web-sm
+    #   pyabsa
+spacy-legacy==3.0.12
+    # via
+    #   -r requirements.in
+    #   spacy
+spacy-loggers==1.0.5
+    # via
+    #   -r requirements.in
+    #   spacy
+srsly==2.4.8
+    # via
+    #   -r requirements.in
+    #   confection
+    #   spacy
+    #   thinc
+    #   weasel
 stack-data==0.6.3
     # via
     #   -r requirements.in
@@ -387,20 +631,42 @@ statsmodels==0.14.4
     # via
     #   -r requirements.in
     #   plotnine
+summa==1.2.0
+    # via -r requirements.in
 sympy==1.13.1
     # via
     #   -r requirements.in
     #   torch
+tabulate==0.9.0
+    # via
+    #   -r requirements.in
+    #   metric-visualizer
+    #   yake
 tenacity==9.0.0
     # via
     #   -r requirements.in
     #   plotly
+termcolor==2.5.0
+    # via
+    #   -r requirements.in
+    #   findfile
+    #   pyabsa
+textblob==0.18.0.post0
+    # via -r requirements.in
+thinc==8.2.5
+    # via
+    #   -r requirements.in
+    #   spacy
 threadpoolctl==3.5.0
     # via
     #   -r requirements.in
     #   scikit-learn
 tiktoken==0.8.0
     # via -r requirements.in
+tikzplotlib==0.10.1
+    # via
+    #   -r requirements.in
+    #   metric-visualizer
 tokenizers==0.20.3
     # via
     #   -r requirements.in
@@ -409,6 +675,8 @@ torch==2.5.1
     # via
     #   -r requirements.in
     #   accelerate
+    #   pyabsa
+    #   pytorch-warmup
     #   sentence-transformers
     #   torchvision
 torchvision==0.20.1
@@ -423,8 +691,12 @@ tqdm==4.67.1
     #   -r requirements.in
     #   bertopic
     #   datasets
+    #   evaluate
     #   huggingface-hub
+    #   nltk
+    #   pyabsa
     #   sentence-transformers
+    #   spacy
     #   transformers
     #   umap-learn
 traitlets==5.14.3
@@ -440,13 +712,24 @@ traitlets==5.14.3
 transformers==4.46.3
     # via
     #   -r requirements.in
+    #   pyabsa
     #   sentence-transformers
+    #   setfit
+typer==0.13.1
+    # via
+    #   -r requirements.in
+    #   spacy
+    #   weasel
 typing-extensions==4.12.2
     # via
     #   -r requirements.in
     #   huggingface-hub
     #   ipython
+    #   pyabsa
+    #   pydantic
+    #   pydantic-core
     #   torch
+    #   typer
 tzdata==2024.2
     # via
     #   -r requirements.in
@@ -455,23 +738,56 @@ umap-learn==0.5.7
     # via
     #   -r requirements.in
     #   bertopic
+update-checker==0.18.0
+    # via
+    #   -r requirements.in
+    #   metric-visualizer
+    #   pyabsa
 urllib3==2.2.3
     # via
     #   -r requirements.in
     #   requests
+wasabi==1.1.3
+    # via
+    #   -r requirements.in
+    #   spacy
+    #   thinc
+    #   weasel
 wcwidth==0.2.13
     # via
     #   -r requirements.in
     #   prompt-toolkit
+weasel==0.4.1
+    # via
+    #   -r requirements.in
+    #   spacy
+webcolors==24.11.1
+    # via
+    #   -r requirements.in
+    #   tikzplotlib
 widgetsnbextension==4.0.13
     # via
     #   -r requirements.in
     #   ipywidgets
+wrapt==1.17.0
+    # via
+    #   -r requirements.in
+    #   smart-open
+xlsxwriter==3.2.0
+    # via
+    #   -r requirements.in
+    #   metric-visualizer
 xxhash==3.5.0
     # via
     #   -r requirements.in
     #   datasets
+    #   evaluate
+yake==0.4.8
+    # via -r requirements.in
 yarl==1.18.0
     # via
     #   -r requirements.in
     #   aiohttp
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
