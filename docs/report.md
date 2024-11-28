@@ -81,17 +81,7 @@ The first research question is a comparison of sentiment across categories, the 
 
 #### Dataset Selection
 
-To answer these questions, we chose the [Amazon Reviews'23 dataset](https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023) which is the standard dataset for the Amazon product reviews in the RecSys and NLP communities. This dataset is a collection of 571.54M reviews, 245.2% larger than the last version, with interactions ranging from May 1996 to September 2023. It includes richer metadata, fine-grained timestamps and cleaner processing, making it an ideal choice for our analysis. We decided to choose it 
-
-- https://amazon-reviews-2023.github.io/
-- https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023
-        - easier to download from huggingface
-        - Larger Dataset: We collected 571.54M reviews, 245.2% larger than the last version;
-        - Newer Interactions: Current interactions range from May. 1996 to Sep. 2023;
-        - Richer Metadata: More descriptive features in item metadata;
-        - Fine-grained Timestamp: Interaction timestamp at the second or finer level;
-        - Cleaner Processing: Cleaner item metadata than previous versions;
-        - Standard Splitting: Standard data splits to encourage RecSys benchmarking.
+To answer these questions, we chose the [Amazon Reviews'23 dataset](https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023) which is the standard dataset for the Amazon product reviews in the RecSys and NLP communities. This dataset is a collection of 571.54M reviews, 245.2% larger than the last version, with interactions ranging from May 1996 to September 2023. It includes richer metadata, fine-grained timestamps and cleaner processing, making it an ideal choice for our analysis. Most importantly it is easily accessible through the Hugging Face Datasets library, which simplifies the data loading and preprocessing steps.
 
 <!-- How did you clean/transform the data? Why? -->
 
@@ -99,7 +89,7 @@ To answer these questions, we chose the [Amazon Reviews'23 dataset](https://hugg
         - 100,000 samples per category (2.92 GB): doesn't fit in memory for plotting
         - 10,000 samples per category (0.33 GB): inference would take 8 days (339880 items with 2it/s)
         - 1,000 samples per category (0.03 GB): inference would take 19 hours (33994 items with 2it/s)
-        - 100 samples per category (<0.00 GB): inference would take 2 hours (3399 items with 2it/s) — this is what we used
+        - 100 samples per category (<0.00 GB): inference would take 2 hours (3399 items with 2it/s) — this is what we used, it was small enough to push to git (2 MB)
 - lots of languages, so models had to be multilingual
         - some of them were, others weren't
 
