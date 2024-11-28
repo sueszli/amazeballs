@@ -11,12 +11,10 @@ set_env()
 data_path = get_current_dir().parent / "data"
 dataset_path = get_current_dir().parent / "datasets"
 weights_path = get_current_dir().parent / "weights"
-output_path = get_current_dir()
 
 os.makedirs(data_path, exist_ok=True)
 os.makedirs(dataset_path, exist_ok=True)
 os.makedirs(weights_path, exist_ok=True)
-os.makedirs(output_path, exist_ok=True)
 
 
 #
@@ -203,23 +201,40 @@ def get_rating(review):
         return None
 
 
+def add_inferences(df, sample_size):
+    results_path = dataset_path / f"results_n{sample_size}.csv"
+    print(f"results_path: {results_path}")
+    if not results_path.exists():
+        tqdm.pandas()
+
+        def process_row(row):
+            review = f"{row['title']}: {row['text']}"
+            sentiment, score = get_sentiment(review)
+            return {
+                "language": get_language(review),
+                "sentiment": sentiment,
+                "sentiment_score": score,
+                "subjectivity_score": get_subjectivity(review),
+                "aspects": get_aspects(review),
+                "rating": get_rating(review),
+            }
+
+        results = df.progress_apply(process_row, axis=1)
+        results.to_csv(results_path, index=False)
+    else:
+        results = pd.read_csv(results_path)
+
+    df = df.copy()
+    results = results["0"].apply(lambda x: pd.Series(eval(x)))
+    df = pd.concat([df, results], axis=1)
+    return df
+
+
 if __name__ == "__main__":
     df = get_all_data(sample_size=100)
     df = preprocess(df)
+    df = add_inferences(df, sample_size=100)
 
-    tqdm.pandas()
-
-    def process_row(row):
-        review = f"{row['title']}: {row['text']}"
-        sentiment, score = get_sentiment(review)
-        return {
-            "language": get_language(review),
-            "sentiment": sentiment,
-            "sentiment_score": score,
-            "subjectivity_score": get_subjectivity(review),
-            "aspects": get_aspects(review),
-            "rating": get_rating(review),
-        }
-
-    results = df.progress_apply(process_row, axis=1)
-    results.to_csv(data_path / "final_n1000.csv", index=False)
+    # save
+    df.to_csv(data_path / "data.csv", index=False)
+    print("saved data")
