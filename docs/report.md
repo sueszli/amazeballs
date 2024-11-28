@@ -14,10 +14,10 @@ header-includes:
     - \usepackage{titling}
     - \setlength{\droptitle}{-15pt}
     - \pretitle{\vspace{-30pt}\begin{center}\LARGE}
-    - \posttitle{\end{center}\vspace{-50pt}}    
+    - \posttitle{\end{center}\vspace{-70pt}}    
     # content
     - \usepackage{scrextend}
-    - \changefontsizes[8pt]{8pt}
+    - \changefontsizes{8pt}
     # code
     - \usepackage{fancyvrb}
     - \fvset{fontsize=\fontsize{6pt}{6pt}\selectfont}
@@ -30,6 +30,12 @@ header-includes:
 <!-- 
 
 https://tuwel.tuwien.ac.at/pluginfile.php/4247741/mod_resource/content/1/DOPP2024_Exercise2.pdf
+
+this is just as much about the "data science process" as it is about the results.
+
+this is an open ended task.
+
+we're free to pick whatever dataset we like, and modify questions with supervisor's approval.
 
 deliverables:
 
@@ -47,63 +53,24 @@ deliverables:
 
 -->
 
-this is just as much about the "data science process" as it is about the results.
+#### Motivation
 
-this is an open ended task.
+Understanding online reviews isn't just about interpreting customer opinions; it's a window into how people perceive and interact with products across diverse categories. The Amazon Dataset'23 offers a treasure trove of insights, allowing us to explore patterns in sentiment, subjectivity and the elements that matter most in consumer decision-making. By digging into this data, we aim to uncover the subtle relationships between what customers say and how they rate products, shedding light on the dynamics of trust, satisfaction and expectation in the digital marketplace.
 
-we're free to pick whatever dataset we like, and modify questions with supervisor's approval.
+Beyond the findings, this report highlights the (data science) process of turning raw, unstructured data into actionable knowledge. Through techniques like sentiment analysis, topic modeling and classification, we're not just addressing key questions about product reviews – we're also demonstrating the iterative, hands-on nature of data science itself.
 
-# intro
+#### Process
 
-*data science process*
+The mentioned process which we followed, is more formally known as CRISP-DM (Cross-Industry Standard Process for Data Mining). It begins with (1) business understanding, where we refine the research questions in consultation with a supervisor for our project, define variables and metrics and build hypotheses while being mindful of biases. Next, we move to (2) data understanding, where we sample and preprocess the data, ensuring privacy and assess the accuracy, biases and reliability of the measurements. In (3) data preparation, we clean the data by checking for missing values, outliers and inconsistencies, calculating descriptive statistics and transforming the data as needed. If the data is insufficient to answer the research questions, we may combine columns, look for additional datasets, or modify the questions. In (4) modeling, we calculate correlations and build models to explore the relationships between variables. During (5) evaluation, we plot the data, identify patterns and anomalies, visualize the findings and check predictions to assess if the models answer the original questions. Finally, (6) deployment involves using the results to make decisions or share insights with stakeholders.
 
-- 1 – ask research question
-	- define variables, metrics, build hypothesis
-- 2 – get the data
-	- sample, preprocess, ensure privacy
-- 3 – explore the data
-	- plot, find patterns and anomalies
-- 4 – model the data
-	- fit a model, validate
-	- bias (inaccurate) vs. variance (overfitting)
-- 5 – communicate findings
-	- report, visualize
-	- correlation ≠ causation
+#### Research Questions
 
-*crisp-dm*
+The research questions we chose to answer (based on exercise 21) are as follows:
 
-- = cross-industry standard process for data mining
-- 1 – business understanding
-	- Refine questions (on confirmation with supervisor in review meeting)
-	- Beware of biases
-- 2 – data understanding
-	- Understand what is in the data — are the data measurements or estimates? How accurate are these measurements or estimates? Are there biases in the data (e.g. in the data gathering process)? If you use estimates to make new estimates, how accurate are the new estimates?
-- 3 – data preparation
-	- Clean the data
-        - Check for missing data points – decide what to do about them
-        - Check for outliers – decide what to do about them
-        - Check for inconsistencies – decide what to do about them
-        - Calculate descriptive statistics
-        - Transform the data (e.g. changing units of measurements)
-        - Check if the necessary data is there to answer the questions. If not, then you could (1) combine columns in some way to generate the necessary data (2) Find the necessary data in another dataset (3) Change the questions asked (in this case you have the freedom to do this, but this may not be the case if someone else is asking the questions)
-- 4 – modeling
-	- Calculate correlations
-- 5 – evaluation
-	- Visualize the data
-	- Check predictions
-	- Answer questions
-- 6 – deployment
-
-# research questions
-
-motivation on why this matters
-
-Question 21:
-
-- RQ1: Are reviews for some categories of product on Amazon overall more positive than for other categories? (sentiment analysis: polarity)
-- RQ2: Are reviews more subjective for some classes of products than for others? (sentiment analysis: subjectivity)
-- RQ3: Which aspects of different classes of products are the most important in the reviews? (topic modeling, aspect extraction)
-- RQ4: Can one predict the star rating from the review text? (sentence to star rating classification)
+- RQ1: Are reviews for some categories of product on Amazon overall more positive than for other categories?
+- RQ2: Are reviews more subjective for some classes of products than for others?
+- RQ3: Which aspects of different classes of products are the most important in the reviews?
+- RQ4: Can one predict the star rating from the review text?
 
 # methodology
 
