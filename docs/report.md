@@ -107,8 +107,6 @@ Question 21:
 
 # methodology
 
-- algorithms benchmark: https://paperswithcode.com/dataset/amazon-review
-
 Which dataset(s) did you choose? Why?
 
 - https://amazon-reviews-2023.github.io/
@@ -124,9 +122,12 @@ Which dataset(s) did you choose? Why?
 How did you clean/transform the data? Why?
 
 - sample because too large
-        - 100_000 samples were 2.92 GB → too large, takes forever to plot
-        - 10_000 samples were 0.33 gb → managable to plot, but takes a long time to infer additional data via models
+        - 100,000 samples per category (2.92 GB): doesn't fit in memory for plotting
+        - 10,000 samples per category (0.33 GB): inference would take 8 days (339880 items with 2it/s)
+        - 1,000 samples per category (0.03 GB): inference would take 19 hours (33994 items with 2it/s)
+        - 100 samples per category (<0.00 GB): inference would take 2 hours (3399 items with 2it/s) — this is what we used
 - lots of languages, so models had to be multilingual
+        - some of them were, others weren't
 
 How did you solve the problem of missing values? Why?
 

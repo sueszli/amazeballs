@@ -128,8 +128,36 @@ def get_subjectivity(review):
         return None
 
 
+def get_aspects_v1(review):
+    # this takes too long and SetFitABSA is not mature enough yet
+    from pyabsa import AspectTermExtraction as ATEPC
+
+    aspect_extractor = ATEPC.AspectExtractor("multilingual", auto_device=True, cal_perplexity=True, checkpoint_save_path=weights_path)
+    review = review[:512]
+    try:
+        result = aspect_extractor.predict(review, pred_sentiment=True, print_result=False)
+        aspects = result["aspect"]
+        sentiments = result["sentiment"]
+        confidences = result["confidence"]
+        zipped = list(zip(aspects, sentiments, confidences))
+        zipped = [(aspect, sentiment, confidence) for aspect, sentiment, confidence in zipped if confidence > 0.5]
+        return zipped
+    except:
+        return None
+
+
 def get_aspects(review):
-    pass
+    import yake
+    from summa import keywords
+
+    kw_extractor = yake.KeywordExtractor(lan="en", n=2, dedupLim=0.3, top=10, features=None)
+    review = review[:512]
+    try:
+        keywords = kw_extractor.extract_keywords(review)
+        return [kw for kw, score in keywords if score > 0.3]
+    except:
+        return None
+
 
 def get_rating(review):
     from transformers import AutoModelForSequenceClassification, AutoTokenizer
@@ -161,52 +189,26 @@ def preprocess(df):
     df["title"] = df["title"].str.strip()
     df = df[df["text"].str.len() > 0]
     df = df[df["title"].str.len() > 0]
-
-    # make sure to store everything after you're done -> then we only load data from huggingface instead of doing all of this
-    # for idx, row in tqdm(df.iterrows(), total=len(df), desc="sentiment analysis", ncols=100):
-    #     review = f"{row['title']}: {row['text']}"
-    #     language = get_language(review)
-    #     df.at[idx, 'language'] = language
     return df
 
 
-df = get_all_data(sample_size=100)
-df = preprocess(df)
+if __name__ == "__main__":
+    df = get_all_data(sample_size=100)
+    df = preprocess(df)
 
-fst = df.iloc[11]
-review = f"{fst['title']}: {fst['text']}"
-print(review[:512])
+    tqdm.pandas()
 
-# print(f"{get_language(review)=}")
-# print(f"{get_sentiment(review)=}")
-# print(f"{get_subjectivity(review)=}")
-# print(f"{get_rating(review)=}")
+    def process_row(row):
+        review = f"{row['title']}: {row['text']}"
+        return {
+            "language": get_language(review),
+            "sentiment": get_sentiment(review)[0],
+            "sentiment_score": get_sentiment(review)[1],
+            "subjectivity_score": get_subjectivity(review),
+            "aspects": get_aspects(review),
+            "rating": get_rating(review),
+        }
 
+    results = df.progress_apply(process_row, axis=1)
 
-import warnings
-import os
-
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore")
-    warnings.filterwarnings('ignore')
-    warnings.filterwarnings('ignore', category=FutureWarning)
-    warnings.filterwarnings('ignore', category=UserWarning)
-    warnings.filterwarnings('ignore', category=ResourceWarning)
-    os.environ['PYTHONWARNINGS'] = 'ignore::UserWarning'
-
-    from pyabsa import AspectTermExtraction as ATEPC
-
-    aspect_extractor = ATEPC.AspectExtractor(
-        'multilingual',
-        auto_device=True,
-        cal_perplexity=True,
-        checkpoint_save_path=weights_path,
-    )
-
-    text = ["The food was great but the service was terrible."]
-    result = aspect_extractor.predict(
-        text,
-        pred_sentiment=True,
-        print_result=False
-    )
-    print(result)
+    df.to_csv(dataset_path / "final.csv", index=False)
