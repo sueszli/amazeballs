@@ -152,7 +152,7 @@ def get_subjectivity(review):
 
 def get_aspects_old(review):
     # this takes >5s and SetFitABSA is not mature enough yet
-    assert False, "this function is deprecated"
+    raise DeprecationWarning
     from pyabsa import AspectTermExtraction as ATEPC
 
     aspect_extractor = ATEPC.AspectExtractor("multilingual", auto_device=True, cal_perplexity=True, checkpoint_save_path=weights_path)
