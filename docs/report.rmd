@@ -163,7 +163,7 @@ df$category[is.na(df$category)] <- "unknown"
 
 ## RQ1: Sentiment Analysis
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=15, fig.height=8}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=20, fig.height=8}
 median_sentiment <- aggregate(df$sentiment_score, by = list(Category = df$category), FUN = median)
 ordered_categories <- median_sentiment$Category[order(median_sentiment$x)]
 
@@ -191,7 +191,7 @@ grid.arrange(p1, p2, ncol = 2)
 
 ## RQ2: Subjectivity Analysis
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=15, fig.height=8}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=20, fig.height=8}
 p1 <- ggplot(df, aes(x = reorder(category, subjectivity_score, median), y = subjectivity_score)) +
     geom_boxplot(fill = "lightgray") +
     coord_flip() +
@@ -219,7 +219,7 @@ grid.arrange(p1, p2, ncol = 2)
 
 ## RQ4: Star Rating Prediction
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=15, fig.height=5}
 confusion_matrix <- table(df$rating, df$predicted_rating)
 p1 <- ggplot(as.data.frame(confusion_matrix), aes(x = Var1, y = Var2, fill = Freq)) +
     geom_tile() +
