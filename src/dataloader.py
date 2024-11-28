@@ -128,19 +128,8 @@ def get_subjectivity(review):
         return None
 
 
-# def get_aspects(review):
-#     from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
-
-#     model_name = "yangheng/deberta-v3-large-absa-v1.1"
-#     tokenizer = AutoTokenizer.from_pretrained(model_name, padding=True, truncation=True, max_length=512, cache_dir=weights_path, local_files_only=False)
-#     model = AutoModelForSequenceClassification.from_pretrained(model_name, cache_dir=weights_path, local_files_only=False)
-#     classifier = pipeline("text-classification", model=model, tokenizer=tokenizer, device_map="auto")
-#     review = review[:512]
-
-#     outputs = classifier(review)
-#     return outputs
-
-
+def get_aspects(review):
+    pass
 
 def get_rating(review):
     from transformers import AutoModelForSequenceClassification, AutoTokenizer
@@ -193,13 +182,31 @@ print(review[:512])
 # print(f"{get_subjectivity(review)=}")
 # print(f"{get_rating(review)=}")
 
-from setfit import AbsaModel
 
-model = AbsaModel.from_pretrained(
-    "sentence-transformers/all-MiniLM-L6-v2",
-    "sentence-transformers/all-mpnet-base-v2",
-    spacy_model="en_core_web_sm",
-    device=get_device(disable_mps=False),
-    cache_dir=weights_path,
-)
+import warnings
+import os
 
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    warnings.filterwarnings('ignore')
+    warnings.filterwarnings('ignore', category=FutureWarning)
+    warnings.filterwarnings('ignore', category=UserWarning)
+    warnings.filterwarnings('ignore', category=ResourceWarning)
+    os.environ['PYTHONWARNINGS'] = 'ignore::UserWarning'
+
+    from pyabsa import AspectTermExtraction as ATEPC
+
+    aspect_extractor = ATEPC.AspectExtractor(
+        'multilingual',
+        auto_device=True,
+        cal_perplexity=True,
+        checkpoint_save_path=weights_path,
+    )
+
+    text = ["The food was great but the service was terrible."]
+    result = aspect_extractor.predict(
+        text,
+        pred_sentiment=True,
+        print_result=False
+    )
+    print(result)
