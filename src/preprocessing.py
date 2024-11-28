@@ -226,6 +226,7 @@ def add_inferences(df, sample_size):
 
     df = df.copy()
     results = results["0"].apply(lambda x: pd.Series(eval(x)))
+    results = results.rename(columns={"rating": "predicted_rating"})
     df = pd.concat([df, results], axis=1)
     return df
 
