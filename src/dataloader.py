@@ -206,10 +206,11 @@ if __name__ == "__main__":
 
     def process_row(row):
         review = f"{row['title']}: {row['text']}"
+        sentiment, score = get_sentiment(review)
         return {
             "language": get_language(review),
-            "sentiment": get_sentiment(review)[0],
-            "sentiment_score": get_sentiment(review)[1],
+            "sentiment": sentiment,
+            "sentiment_score": score,
             "subjectivity_score": get_subjectivity(review),
             "aspects": get_aspects(review),
             "rating": get_rating(review),
