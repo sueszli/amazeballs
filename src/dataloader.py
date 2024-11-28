@@ -20,7 +20,7 @@ os.makedirs(output_path, exist_ok=True)
 
 
 #
-# data
+# data loading
 #
 
 
@@ -89,8 +89,30 @@ def get_all_data(sample_size):
     return data
 
 
-#
+# 
 # preprocessing
+# 
+
+
+def preprocess(df):
+    df = df.copy()
+
+    df.drop(columns=["images", "asin", "parent_asin", "user_id"], inplace=True, errors="ignore")
+
+    df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
+
+    df = df.dropna(subset=["text", "title", "rating"])
+    df["text"] = df["text"].str.replace(r"<.*?>", "", regex=True)  # drop html tags
+    df["title"] = df["title"].str.replace(r"<.*?>", "", regex=True)
+    df["text"] = df["text"].str.strip()
+    df["title"] = df["title"].str.strip()
+    df = df[df["text"].str.len() > 0]
+    df = df[df["title"].str.len() > 0]
+    return df
+
+
+#
+# inference
 #
 
 
@@ -173,23 +195,6 @@ def get_rating(review):
         return float(predicted_class[0])  # match dataset
     except:
         return None
-
-
-def preprocess(df):
-    df = df.copy()
-
-    df.drop(columns=["images", "asin", "parent_asin", "user_id"], inplace=True, errors="ignore")
-
-    df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
-
-    df = df.dropna(subset=["text", "title", "rating"])
-    df["text"] = df["text"].str.replace(r"<.*?>", "", regex=True)  # drop html tags
-    df["title"] = df["title"].str.replace(r"<.*?>", "", regex=True)
-    df["text"] = df["text"].str.strip()
-    df["title"] = df["title"].str.strip()
-    df = df[df["text"].str.len() > 0]
-    df = df[df["title"].str.len() > 0]
-    return df
 
 
 if __name__ == "__main__":
