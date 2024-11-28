@@ -158,6 +158,9 @@ set.seed(42)
 
 df <- read.csv("../data/data.csv", header = TRUE, sep = ",")
 
+df$aspects <- gsub("\\[|\\]|\\'", "", df$aspects)
+df$aspects <- gsub("n't", "", df$aspects)
+df <- df[!is.na(df$aspects) & df$aspects != "" & df$category != "unknown",]
 df$category[is.na(df$category)] <- "unknown"
 ```
 
@@ -216,6 +219,41 @@ grid.arrange(p1, p2, ncol = 2)
 ```
 
 ## RQ3: Aspect Extraction
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=20, fig.height=8}
+options(repr.plot.width=20, repr.plot.height=20)
+
+total_counts <- df %>%
+    separate_rows(aspects, sep = ",") %>%
+    filter(aspects != "") %>%
+    group_by(aspects) %>%
+    summarise(total = n())
+aspects_df <- df %>%
+    separate_rows(aspects, sep = ",") %>%
+    filter(aspects != "") %>%
+    group_by(aspects, category) %>%
+    summarise(count = n(), .groups = 'drop') %>%
+    left_join(total_counts, by = "aspects")
+ggplot(head(aspects_df, 30), aes(x = reorder(aspects, total), y = count, fill = category)) +
+    geom_bar(stat = "identity") +
+    coord_flip() +
+    theme_minimal() +
+    labs(title = "Top 30 Aspects Mentioned in Reviews by Category", x = "Aspect", y = "Frequency")
+
+aspects_df <- df %>%
+    separate_rows(aspects, sep = ", ") %>%
+    count(category, aspects, sort = TRUE) %>%
+    group_by(category) %>%
+    slice_head(n = 5) %>%
+    filter(!is.na(aspects))
+ggplot(aspects_df, aes(x = reorder(aspects, n), y = n)) +
+    geom_col(fill = "gray") +
+    facet_wrap(~category, scales = "free_y") +
+    coord_flip() +
+    theme_minimal() +
+    labs(x = "Aspects", y = "Frequency", title = "Top 5 Most Common Aspects by Category") +
+    theme(strip.text = element_text(face = "bold"), axis.text = element_text(size = 9))
+```
 
 ## RQ4: Star Rating Prediction
 
