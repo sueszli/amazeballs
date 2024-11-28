@@ -89,9 +89,9 @@ def get_all_data(sample_size):
     return data
 
 
-# 
+#
 # preprocessing
-# 
+#
 
 
 def preprocess(df):
@@ -150,8 +150,9 @@ def get_subjectivity(review):
         return None
 
 
-def get_aspects_v1(review):
-    # this takes too long and SetFitABSA is not mature enough yet
+def get_aspects_old(review):
+    # this takes >5s and SetFitABSA is not mature enough yet
+    assert False, "this function is deprecated"
     from pyabsa import AspectTermExtraction as ATEPC
 
     aspect_extractor = ATEPC.AspectExtractor("multilingual", auto_device=True, cal_perplexity=True, checkpoint_save_path=weights_path)
