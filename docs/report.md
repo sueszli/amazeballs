@@ -53,6 +53,8 @@ deliverables:
 
 -->
 
+* all group members contributed equally to this project
+
 #### Motivation
 
 Understanding online reviews isn't just about interpreting customer opinions; it's a window into how people perceive and interact with products across diverse categories. The Amazon Dataset'23 offers a treasure trove of insights, allowing us to explore patterns in sentiment, subjectivity and the elements that matter most in consumer decision-making. By digging into this data, we aim to uncover the subtle relationships between what customers say and how they rate products, shedding light on the dynamics of trust, satisfaction and expectation in the digital marketplace.
@@ -63,16 +65,16 @@ Beyond the findings, this report highlights the (data science) process of turnin
 
 The mentioned process which we followed, is more formally known as CRISP-DM (Cross-Industry Standard Process for Data Mining). It begins with (1) business understanding, where we refine the research questions in consultation with a supervisor for our project, define variables and metrics and build hypotheses while being mindful of biases. Next, we move to (2) data understanding, where we sample and preprocess the data, ensuring privacy and assess the accuracy, biases and reliability of the measurements. In (3) data preparation, we clean the data by checking for missing values, outliers and inconsistencies, calculating descriptive statistics and transforming the data as needed. If the data is insufficient to answer the research questions, we may combine columns, look for additional datasets, or modify the questions. In (4) modeling, we calculate correlations and build models to explore the relationships between variables. During (5) evaluation, we plot the data, identify patterns and anomalies, visualize the findings and check predictions to assess if the models answer the original questions. Finally, (6) deployment involves using the results to make decisions or share insights with stakeholders.
 
-#### Research Questions
+# Research Questions
 
-The research questions we chose to answer (based on exercise 21) are as follows:
+# Methodology
+
+Exercise 21:
 
 - RQ1: Are reviews for some categories of product on Amazon overall more positive than for other categories?
 - RQ2: Are reviews more subjective for some classes of products than for others?
 - RQ3: Which aspects of different classes of products are the most important in the reviews?
 - RQ4: Can one predict the star rating from the review text?
-
-# methodology
 
 Which dataset(s) did you choose? Why?
 
@@ -112,4 +114,6 @@ Which Data Science tools and techniques were learned during this exercise?
 
 How was the work divided up between the members of the group?
 
-# results
+# Findings
+
+
