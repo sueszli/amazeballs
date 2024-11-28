@@ -1,5 +1,6 @@
 ---
 title: "Report: Amazon Reviews'23"
+subtitle: "Code: [`github.com/sueszli/amazeballs/`](https://github.com/sueszli/amazeballs/)"
 output: pdf_document
 documentclass: article
 papersize: a4
@@ -53,8 +54,6 @@ deliverables:
 
 -->
 
-* all group members contributed equally to this project
-
 #### Motivation
 
 Understanding online reviews isn't just about interpreting customer opinions; it's a window into how people perceive and interact with products across diverse categories. The Amazon Dataset'23 offers a treasure trove of insights, allowing us to explore patterns in sentiment, subjectivity and the elements that matter most in consumer decision-making. By digging into this data, we aim to uncover the subtle relationships between what customers say and how they rate products, shedding light on the dynamics of trust, satisfaction and expectation in the digital marketplace.
@@ -63,20 +62,26 @@ Beyond the findings, this report highlights the (data science) process of turnin
 
 #### Process
 
-The mentioned process which we followed, is more formally known as CRISP-DM (Cross-Industry Standard Process for Data Mining). It begins with (1) business understanding, where we refine the research questions in consultation with a supervisor for our project, define variables and metrics and build hypotheses while being mindful of biases. Next, we move to (2) data understanding, where we sample and preprocess the data, ensuring privacy and assess the accuracy, biases and reliability of the measurements. In (3) data preparation, we clean the data by checking for missing values, outliers and inconsistencies, calculating descriptive statistics and transforming the data as needed. If the data is insufficient to answer the research questions, we may combine columns, look for additional datasets, or modify the questions. In (4) modeling, we calculate correlations and build models to explore the relationships between variables. During (5) evaluation, we plot the data, identify patterns and anomalies, visualize the findings and check predictions to assess if the models answer the original questions. Finally, (6) deployment involves using the results to make decisions or share insights with stakeholders.
-
-# Research Questions
+The process which we followed, is more formally known as CRISP-DM (Cross-Industry Standard Process for Data Mining). It begins with (1) business understanding, where we refine the research questions in consultation with a supervisor for our project, define variables and metrics and build hypotheses while being mindful of biases. Next, we move to (2) data understanding, where we sample and preprocess the data, ensuring privacy and assess the accuracy, biases and reliability of the measurements. In (3) data preparation, we clean the data by checking for missing values, outliers and inconsistencies, calculating descriptive statistics and transforming the data as needed. If the data is insufficient to answer the research questions, we may combine columns, look for additional datasets, or modify the questions. In (4) modeling, we calculate correlations and build models to explore the relationships between variables. During (5) evaluation, we plot the data, identify patterns and anomalies, visualize the findings and check predictions to assess if the models answer the original questions. Finally, (6) deployment involves using the results to make decisions or share insights with stakeholders.
 
 # Methodology
 
-Exercise 21:
+#### Research Questions
+
+First we define the research questions that we aim to answer. Our team has selected task 21 from the list provided by the course team and did not further modify it. The research questions are as follows:
 
 - RQ1: Are reviews for some categories of product on Amazon overall more positive than for other categories?
 - RQ2: Are reviews more subjective for some classes of products than for others?
 - RQ3: Which aspects of different classes of products are the most important in the reviews?
 - RQ4: Can one predict the star rating from the review text?
 
-Which dataset(s) did you choose? Why?
+The first research question is a comparison of sentiment across categories, the second is a comparison of subjectivity across categories, the third is a topic modeling task, commonly referred to as aspect-based sentiment analysis and the fourth is a classification task to predict the star rating from the review text.
+
+<!-- Which dataset(s) did you choose? Why? -->
+
+#### Dataset Selection
+
+To answer these questions, we chose the [Amazon Reviews'23 dataset](https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023) which is the standard dataset for the Amazon product reviews in the RecSys and NLP communities. This dataset is a collection of 571.54M reviews, 245.2% larger than the last version, with interactions ranging from May 1996 to September 2023. It includes richer metadata, fine-grained timestamps and cleaner processing, making it an ideal choice for our analysis. We decided to choose it 
 
 - https://amazon-reviews-2023.github.io/
 - https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023
@@ -88,7 +93,7 @@ Which dataset(s) did you choose? Why?
         - Cleaner Processing: Cleaner item metadata than previous versions;
         - Standard Splitting: Standard data splits to encourage RecSys benchmarking.
 
-How did you clean/transform the data? Why?
+<!-- How did you clean/transform the data? Why? -->
 
 - sample because too large
         - 100,000 samples per category (2.92 GB): doesn't fit in memory for plotting
@@ -98,22 +103,20 @@ How did you clean/transform the data? Why?
 - lots of languages, so models had to be multilingual
         - some of them were, others weren't
 
-How did you solve the problem of missing values? Why?
+<!-- How did you solve the problem of missing values? Why? -->
 
-What questions did you ask of the data? Why were these good questions?
+<!-- What questions did you ask of the data? Why were these good questions? -->
 
-What were the answers to these questions? How did you obtain them? Do the answers make sense?
+<!-- What were the answers to these questions? How did you obtain them? Do the answers make sense? -->
 
-Were there any difficulties in analysing the data?
+<!-- Were there any difficulties in analysing the data? -->
 
-What were the key insights obtained?
+<!-- What were the key insights obtained? -->
 
-What are potential biases in the data and analysis?
+<!-- What are potential biases in the data and analysis? -->
 
-Which Data Science tools and techniques were learned during this exercise?
+<!-- Which Data Science tools and techniques were learned during this exercise? -->
 
-How was the work divided up between the members of the group?
+<!-- How was the work divided up between the members of the group? -->
 
 # Findings
-
-

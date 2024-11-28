@@ -223,4 +223,4 @@ if __name__ == "__main__":
 
     results = df.progress_apply(process_row, axis=1)
 
-    df.to_csv(dataset_path / "final.csv", index=False)
+    df.to_csv(data_path / "final_n1000.csv", index=False)
