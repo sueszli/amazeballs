@@ -4,6 +4,8 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
+accelerate==1.1.1
+    # via -r requirements.in
 aiohappyeyeballs==2.4.3
     # via
     #   -r requirements.in
@@ -29,6 +31,8 @@ attrs==24.2.0
     # via
     #   -r requirements.in
     #   aiohttp
+bertopic==0.16.4
+    # via -r requirements.in
 certifi==2024.8.30
     # via
     #   -r requirements.in
@@ -42,6 +46,14 @@ comm==0.2.2
     #   -r requirements.in
     #   ipykernel
     #   ipywidgets
+contourpy==1.3.1
+    # via
+    #   -r requirements.in
+    #   matplotlib
+cycler==0.12.1
+    # via
+    #   -r requirements.in
+    #   matplotlib
 datasets==3.1.0
     # via -r requirements.in
 debugpy==1.8.9
@@ -68,6 +80,10 @@ filelock==3.16.1
     #   huggingface-hub
     #   torch
     #   transformers
+fonttools==4.55.0
+    # via
+    #   -r requirements.in
+    #   matplotlib
 frozenlist==1.5.0
     # via
     #   -r requirements.in
@@ -79,10 +95,16 @@ fsspec[http]==2024.9.0
     #   datasets
     #   huggingface-hub
     #   torch
+hdbscan==0.8.40
+    # via
+    #   -r requirements.in
+    #   bertopic
 huggingface-hub==0.26.2
     # via
     #   -r requirements.in
+    #   accelerate
     #   datasets
+    #   sentence-transformers
     #   tokenizers
     #   transformers
 idna==3.10
@@ -107,6 +129,12 @@ jinja2==3.1.4
     # via
     #   -r requirements.in
     #   torch
+joblib==1.4.2
+    # via
+    #   -r requirements.in
+    #   hdbscan
+    #   pynndescent
+    #   scikit-learn
 jupyter-client==8.6.3
     # via
     #   -r requirements.in
@@ -120,15 +148,34 @@ jupyterlab-widgets==3.0.13
     # via
     #   -r requirements.in
     #   ipywidgets
+kiwisolver==1.4.7
+    # via
+    #   -r requirements.in
+    #   matplotlib
+langdetect==1.0.9
+    # via -r requirements.in
+llvmlite==0.43.0
+    # via
+    #   -r requirements.in
+    #   numba
+    #   pynndescent
 markupsafe==3.0.2
     # via
     #   -r requirements.in
     #   jinja2
+matplotlib==3.9.2
+    # via
+    #   -r requirements.in
+    #   plotnine
 matplotlib-inline==0.1.7
     # via
     #   -r requirements.in
     #   ipykernel
     #   ipython
+mizani==0.13.0
+    # via
+    #   -r requirements.in
+    #   plotnine
 mpmath==1.3.0
     # via
     #   -r requirements.in
@@ -150,28 +197,58 @@ networkx==3.4.2
     # via
     #   -r requirements.in
     #   torch
-numpy==2.1.3
+numba==0.60.0
     # via
     #   -r requirements.in
+    #   pynndescent
+    #   umap-learn
+numpy==2.0.2
+    # via
+    #   -r requirements.in
+    #   accelerate
+    #   bertopic
+    #   contourpy
     #   datasets
+    #   hdbscan
+    #   matplotlib
+    #   mizani
+    #   numba
     #   pandas
+    #   patsy
+    #   plotnine
+    #   scikit-learn
+    #   scipy
+    #   statsmodels
     #   torchvision
     #   transformers
+    #   umap-learn
 packaging==24.2
     # via
     #   -r requirements.in
+    #   accelerate
     #   datasets
     #   huggingface-hub
     #   ipykernel
+    #   matplotlib
+    #   plotly
+    #   statsmodels
     #   transformers
 pandas==2.2.3
     # via
     #   -r requirements.in
+    #   bertopic
     #   datasets
+    #   mizani
+    #   plotnine
+    #   statsmodels
 parso==0.8.4
     # via
     #   -r requirements.in
     #   jedi
+patsy==1.0.1
+    # via
+    #   -r requirements.in
+    #   statsmodels
 pexpect==4.9.0
     # via
     #   -r requirements.in
@@ -179,11 +256,19 @@ pexpect==4.9.0
 pillow==11.0.0
     # via
     #   -r requirements.in
+    #   matplotlib
+    #   sentence-transformers
     #   torchvision
 platformdirs==4.3.6
     # via
     #   -r requirements.in
     #   jupyter-core
+plotly==5.24.1
+    # via
+    #   -r requirements.in
+    #   bertopic
+plotnine==0.14.3
+    # via -r requirements.in
 prompt-toolkit==3.0.48
     # via
     #   -r requirements.in
@@ -193,9 +278,12 @@ propcache==0.2.0
     #   -r requirements.in
     #   aiohttp
     #   yarl
+protobuf==5.29.0
+    # via -r requirements.in
 psutil==6.1.0
     # via
     #   -r requirements.in
+    #   accelerate
     #   ipykernel
 ptyprocess==0.7.0
     # via
@@ -213,10 +301,19 @@ pygments==2.18.0
     # via
     #   -r requirements.in
     #   ipython
+pynndescent==0.5.13
+    # via
+    #   -r requirements.in
+    #   umap-learn
+pyparsing==3.2.0
+    # via
+    #   -r requirements.in
+    #   matplotlib
 python-dateutil==2.9.0.post0
     # via
     #   -r requirements.in
     #   jupyter-client
+    #   matplotlib
     #   pandas
 pytz==2024.2
     # via
@@ -225,6 +322,7 @@ pytz==2024.2
 pyyaml==6.0.2
     # via
     #   -r requirements.in
+    #   accelerate
     #   datasets
     #   huggingface-hub
     #   transformers
@@ -236,30 +334,73 @@ pyzmq==26.2.0
 regex==2024.11.6
     # via
     #   -r requirements.in
+    #   tiktoken
     #   transformers
 requests==2.32.3
     # via
     #   -r requirements.in
     #   datasets
     #   huggingface-hub
+    #   tiktoken
     #   transformers
 safetensors==0.4.5
     # via
     #   -r requirements.in
+    #   accelerate
     #   transformers
+scikit-learn==1.5.2
+    # via
+    #   -r requirements.in
+    #   bertopic
+    #   hdbscan
+    #   pynndescent
+    #   sentence-transformers
+    #   umap-learn
+scipy==1.14.1
+    # via
+    #   -r requirements.in
+    #   hdbscan
+    #   mizani
+    #   plotnine
+    #   pynndescent
+    #   scikit-learn
+    #   sentence-transformers
+    #   statsmodels
+    #   umap-learn
+sentence-transformers==3.3.1
+    # via
+    #   -r requirements.in
+    #   bertopic
+sentencepiece==0.2.0
+    # via -r requirements.in
 six==1.16.0
     # via
     #   -r requirements.in
     #   asttokens
+    #   langdetect
     #   python-dateutil
 stack-data==0.6.3
     # via
     #   -r requirements.in
     #   ipython
+statsmodels==0.14.4
+    # via
+    #   -r requirements.in
+    #   plotnine
 sympy==1.13.1
     # via
     #   -r requirements.in
     #   torch
+tenacity==9.0.0
+    # via
+    #   -r requirements.in
+    #   plotly
+threadpoolctl==3.5.0
+    # via
+    #   -r requirements.in
+    #   scikit-learn
+tiktoken==0.8.0
+    # via -r requirements.in
 tokenizers==0.20.3
     # via
     #   -r requirements.in
@@ -267,6 +408,8 @@ tokenizers==0.20.3
 torch==2.5.1
     # via
     #   -r requirements.in
+    #   accelerate
+    #   sentence-transformers
     #   torchvision
 torchvision==0.20.1
     # via -r requirements.in
@@ -278,9 +421,12 @@ tornado==6.4.2
 tqdm==4.67.1
     # via
     #   -r requirements.in
+    #   bertopic
     #   datasets
     #   huggingface-hub
+    #   sentence-transformers
     #   transformers
+    #   umap-learn
 traitlets==5.14.3
     # via
     #   -r requirements.in
@@ -292,7 +438,9 @@ traitlets==5.14.3
     #   jupyter-core
     #   matplotlib-inline
 transformers==4.46.3
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   sentence-transformers
 typing-extensions==4.12.2
     # via
     #   -r requirements.in
@@ -303,6 +451,10 @@ tzdata==2024.2
     # via
     #   -r requirements.in
     #   pandas
+umap-learn==0.5.7
+    # via
+    #   -r requirements.in
+    #   bertopic
 urllib3==2.2.3
     # via
     #   -r requirements.in
