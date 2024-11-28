@@ -219,3 +219,27 @@ grid.arrange(p1, p2, ncol = 2)
 
 ## RQ4: Star Rating Prediction
 
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+confusion_matrix <- table(df$rating, df$predicted_rating)
+p1 <- ggplot(as.data.frame(confusion_matrix), aes(x = Var1, y = Var2, fill = Freq)) +
+    geom_tile() +
+    scale_fill_gradient(low = "white", high = "darkblue") +
+    geom_text(aes(label = Freq), color = "black") +
+    labs(x = "Actual Rating", y = "Predicted Rating", title = "Confusion Matrix of Actual vs Predicted Ratings") +
+    theme_minimal()
+
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+p2 <- ggplot(df, aes(x = rating - predicted_rating)) +
+    geom_histogram(binwidth = 1, fill = "skyblue") +
+    geom_line(stat = "count", aes(group = 1), color = "black", size = 1) +
+    labs(x = "Prediction Error (Actual - Predicted)", y = "Count", title = "Distribution of Rating Prediction Errors") +
+    theme_minimal()
+
+grid.arrange(p1, p2, ncol = 2)
+
+knitr::kable(data.frame(
+    "Actual" = c("Positive", "Positive", "Negative", "Negative"),
+    "Predicted" = c("Positive", "Negative", "Positive", "Negative"),
+    "Count" = c(confusion_matrix[2,2], confusion_matrix[2,1], confusion_matrix[1,2], confusion_matrix[1,1])
+), row.names = FALSE)
+```
