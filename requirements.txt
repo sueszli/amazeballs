@@ -788,6 +788,8 @@ yarl==1.18.0
     # via
     #   -r requirements.in
     #   aiohttp
-
+rpy2 == 3.5.1
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
+
+plotnine ==

@@ -158,3 +158,4 @@ XlsxWriter==3.2.0
 xxhash==3.5.0
 yake==0.4.8
 yarl==1.18.0
+rpy2 == 3.5.1
